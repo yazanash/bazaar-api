@@ -13,4 +13,4 @@ vehicles-api:
     ports:
       - "8091:8080"
     volumes:
-      - ./vehicles-uploads:/app/wwwroot/uploads
+      - ./vehicles-uploads:/app/wwwroot/ads
