@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bazaar.app", "Bazaar.app\Bazaar.app.csproj", "{BBCA034D-D97E-4042-9E61-3A29B8815456}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bazaar.Entityframework", "Bazaar.Entityframework\Bazaar.Entityframework.csproj", "{69969CE8-0C6C-4A8B-895F-0E1E331F7899}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBCA034D-D97E-4042-9E61-3A29B8815456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCA034D-D97E-4042-9E61-3A29B8815456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBCA034D-D97E-4042-9E61-3A29B8815456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBCA034D-D97E-4042-9E61-3A29B8815456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69969CE8-0C6C-4A8B-895F-0E1E331F7899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69969CE8-0C6C-4A8B-895F-0E1E331F7899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69969CE8-0C6C-4A8B-895F-0E1E331F7899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69969CE8-0C6C-4A8B-895F-0E1E331F7899}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9C5B049-15C7-44B7-9C0F-1ADA42EFA6C3}
+	EndGlobalSection
+EndGlobal

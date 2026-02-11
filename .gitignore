@@ -1,0 +1,57 @@
+## Ignore Visual Studio temporary files, build results, and
+## user-specific files
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build results
+bin/
+obj/
+out/
+Bazaar.Entityframework/obj/Debug/net8.0/Uniceps.Entityframework.AssemblyInfo.cs
+Bazaar.Entityframework/obj/Debug/net8.0/Uniceps.Entityframework.AssemblyInfoInputs.cache
+Bazaar.Entityframework/obj/Debug/net8.0/Uniceps.Entityframework.csproj.AssemblyReference.cache
+Bazaar.app/obj/Debug/net8.0/Uniceps.app.AssemblyInfo.cs
+Bazaar.app/obj/Debug/net8.0/Uniceps.app.AssemblyInfoInputs.cache
+Bazaar.app/obj/Debug/net8.0/Uniceps.app.csproj.AssemblyReference.cache
+## ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+## Visual Studio Code workspace settings
+*.code-workspace
+
+## Configuration files
+appsettings.Development.json
+appsettings.json
+## Rider IDE
+.idea/
+
+## Logs
+*.log
+logs/
+
+## User secrets (if used)
+secrets.json
+
+## Node modules (if you're using Node.js for frontend assets)
+node_modules/
+
+## Publish
+wwwroot/
+
+## NuGet packages
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Others
+*.dbmdl
+*.bak
+*.sql
+*.pdb

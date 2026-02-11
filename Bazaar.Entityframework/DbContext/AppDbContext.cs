@@ -1,0 +1,74 @@
+﻿using Bazaar.Entityframework.Models;
+using Bazaar.Entityframework.Models.Vehicles;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bazaar.Entityframework.DbContext
+{
+    public class AppDbContext : IdentityDbContext<AppUser>
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<VehicleAd> VehicleAds { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<VehicleModel> vehicleModels { get; set; }
+        public DbSet<CarSpecs> CarSpecs { get; set; }
+        public DbSet<MotorSpecs> MotorSpecs { get; set; }
+        public DbSet<TruckSpecs> TruckSpecs { get; set; }
+        public DbSet<UserFavorite> UserFavorites { get; set; }
+        public DbSet<OTPModel> OTPModels { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<VehicleAd>()
+                    .HasOne(v => v.CarSpecs)
+                    .WithOne(s => s.VehicleAd)
+                    .HasForeignKey<CarSpecs>(s => s.VehicleId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<VehicleAd>()
+                    .HasOne(v => v.MotorSpecs)
+                    .WithOne(s => s.VehicleAd)
+                    .HasForeignKey<MotorSpecs>(s => s.VehicleId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<VehicleAd>()
+                    .HasOne(v => v.TruckSpecs)
+                    .WithOne(s => s.VehicleAd)
+                    .HasForeignKey<TruckSpecs>(s => s.VehicleId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<VehicleModel>()
+                    .HasOne(m => m.Manufacturer)
+                    .WithMany()
+                    .HasForeignKey(m => m.ManufacturerId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<VehicleAd>()
+                   .HasOne(v => v.VehicleModel)
+                   .WithMany()
+                   .HasForeignKey(v => v.VehicleModelId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<UserFavorite>()
+                   .HasKey(f => new { f.UserId, f.VehicleAdId });
+            builder.Entity<VehicleImage>()
+                   .HasOne<VehicleAd>()
+                    .WithMany(v => v.VehicleImages)
+                    .HasForeignKey(i => i.VehicleId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<VehicleAd>()
+                    .HasOne(v => v.User)
+                    .WithMany()
+                    .HasForeignKey(v => v.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<AppUser>()
+                    .HasOne(u => u.Profile)
+                    .WithOne()
+                    .HasForeignKey<Profile>(p => p.UserId);
+        }
+    }
+}

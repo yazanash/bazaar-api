@@ -1,0 +1,6 @@
+@Bazaar.app_HostAddress = http://localhost:5253
+
+GET {{Bazaar.app_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

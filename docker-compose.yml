@@ -1,0 +1,16 @@
+vehicles-api:
+    build: 
+      context: .
+      dockerfile: Bazaar.app/Dockerfile 
+    container_name: vehicles-api
+    restart: always
+    depends_on:
+      - db 
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "8091:8080"
+    volumes:
+      - ./vehicles-uploads:/app/wwwroot/uploads

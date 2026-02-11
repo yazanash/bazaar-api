@@ -1,0 +1,315 @@
+{
+    "Cities": [
+      {
+        "Ar": "دمشق",
+        "En": "Damascus"
+      },
+      {
+        "Ar": "حلب",
+        "En": "Aleppo"
+      },
+      {
+        "Ar": "حمص",
+        "En": "Homs"
+      },
+      {
+        "Ar": "اللاذقية",
+        "En": "Latakia"
+      },
+      {
+        "Ar": "طرطوس",
+        "En": "Tartus"
+      },
+      {
+        "Ar": "حماة",
+        "En": "Hama"
+      },
+      {
+        "Ar": "درعا",
+        "En": "Daraa"
+      },
+      {
+        "Ar": "السويداء",
+        "En": "Sweida"
+      }
+    ],
+    "Manufacturers": [
+      {
+        "Name": "Toyota",
+        "Models": [
+          {
+            "Name": "Camry",
+            "Cat": 1
+          },
+          {
+            "Name": "Hilux",
+            "Cat": 1
+          },
+          {
+            "Name": "Hiace",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "Mercedes-Benz",
+        "Models": [
+          {
+            "Name": "C-Class",
+            "Cat": 1
+          },
+          {
+            "Name": "Actros",
+            "Cat": 3
+          },
+          {
+            "Name": "Atego",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "BMW",
+        "Models": [
+          {
+            "Name": "320i",
+            "Cat": 1
+          },
+          {
+            "Name": "X5",
+            "Cat": 1
+          }
+        ]
+      },
+      {
+        "Name": "Hyundai",
+        "Models": [
+          {
+            "Name": "Elantra",
+            "Cat": 1
+          },
+          {
+            "Name": "H100",
+            "Cat": 3
+          },
+          {
+            "Name": "County",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "Isuzu",
+        "Models": [
+          {
+            "Name": "D-Max",
+            "Cat": 1
+          },
+          {
+            "Name": "NPR",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "Honda",
+        "Models": [
+          {
+            "Name": "Civic",
+            "Cat": 1
+          },
+          {
+            "Name": "CBR 600",
+            "Cat": 2
+          }
+        ]
+      },
+      {
+        "Name": "Yamaha",
+        "Models": [
+          {
+            "Name": "R1",
+            "Cat": 2
+          },
+          {
+            "Name": "MT-07",
+            "Cat": 2
+          }
+        ]
+      },
+      {
+        "Name": "Volvo",
+        "Models": [
+          {
+            "Name": "FH16",
+            "Cat": 3
+          },
+          {
+            "Name": "XC90",
+            "Cat": 1
+          }
+        ]
+      },
+      {
+        "Name": "FAW",
+        "Models": [
+          {
+            "Name": "Tiger V",
+            "Cat": 3
+          },
+          {
+            "Name": "J6P",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "Scania",
+        "Models": [
+          {
+            "Name": "R-Series",
+            "Cat": 3
+          },
+          {
+            "Name": "G-Series",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "MAN",
+        "Models": [
+          {
+            "Name": "TGX",
+            "Cat": 3
+          },
+          {
+            "Name": "TGS",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "Suzuki",
+        "Models": [
+          {
+            "Name": "Swift",
+            "Cat": 1
+          },
+          {
+            "Name": "Hayabusa",
+            "Cat": 2
+          }
+        ]
+      },
+      {
+        "Name": "Kia",
+        "Models": [
+          {
+            "Name": "Cerato",
+            "Cat": 1
+          },
+          {
+            "Name": "Sorento",
+            "Cat": 1
+          }
+        ]
+      },
+      {
+        "Name": "Mitsubishi",
+        "Models": [
+          {
+            "Name": "Lancer",
+            "Cat": 1
+          },
+          {
+            "Name": "Canter",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "Ford",
+        "Models": [
+          {
+            "Name": "F-150",
+            "Cat": 1
+          },
+          {
+            "Name": "Cargo",
+            "Cat": 3
+          }
+        ]
+      },
+      {
+        "Name": "Chevrolet",
+        "Models": [
+          {
+            "Name": "Tahoe",
+            "Cat": 1
+          },
+          {
+            "Name": "Silverado",
+            "Cat": 1
+          }
+        ]
+      },
+      {
+        "Name": "Land Rover",
+        "Models": [
+          {
+            "Name": "Range Rover",
+            "Cat": 1
+          },
+          {
+            "Name": "Defender",
+            "Cat": 1
+          }
+        ]
+      },
+      {
+        "Name": "Nissan",
+        "Models": [
+          {
+            "Name": "Sunny",
+            "Cat": 1
+          },
+          {
+            "Name": "Patrol",
+            "Cat": 1
+          }
+        ]
+      },
+      {
+        "Name": "Aston Martin",
+        "Models": [
+          {
+            "Name": "DB11",
+            "Cat": 1
+          }
+        ]
+      },
+      {
+        "Name": "Audi",
+        "Models": [
+          {
+            "Name": "A6",
+            "Cat": 1
+          }
+        ]
+      },
+      {
+        "Name": "Tesla",
+        "Models": [
+          {
+            "Name": "Model S",
+            "Cat": 1
+          },
+          {
+            "Name": "Model 3",
+            "Cat": 1
+          }
+        ]
+      }
+    ]
+}
