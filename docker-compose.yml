@@ -1,16 +1,22 @@
-vehicles-api:
+services:
+  bazaar-api:
     build: 
       context: .
       dockerfile: Bazaar.app/Dockerfile 
-    container_name: vehicles-api
+    container_name: bazaar-api
     restart: always
-    depends_on:
-      - db 
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_HTTP_PORTS=8080
       - DB_PASSWORD=${DB_PASSWORD}
     ports:
       - "8091:8080"
     volumes:
-      - ./vehicles-uploads:/app/wwwroot/ads
+      - ./appsettings.Production.json:/app/appsettings.Production.json:ro
+      - ./wwwroot/ads:/app/wwwroot/ads
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+    external: true
+    name: uniceps-api_default
