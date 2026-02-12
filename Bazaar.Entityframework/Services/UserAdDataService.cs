@@ -56,7 +56,7 @@ namespace Bazaar.Entityframework.Services
                      .OrderByDescending(ad => ad.PostDate)
                     .Include(x => x.VehicleModel).ThenInclude(x => x!.Manufacturer)
                      .Include(ad => ad.City)
-                     .Include(ad => ad.VehicleImages.FirstOrDefault())
+                     .Include(ad => ad.VehicleImages)
                      .AsNoTracking();
 
             var count = await query.CountAsync();
