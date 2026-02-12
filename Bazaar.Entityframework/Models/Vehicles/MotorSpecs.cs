@@ -18,5 +18,14 @@ namespace Bazaar.Entityframework.Models.Vehicles
         public MotorBodyType MotorBodyType { get; set; }
         public bool IsModified { get; set; }
         public string ModificationDescription { get; set; } = string.Empty;
+
+        public void MergeWith(MotorSpecs motorSpecs)
+        {
+            MotorTransmission = motorSpecs.MotorTransmission;
+            IsRegistered = motorSpecs.IsRegistered;
+            MotorBodyType = motorSpecs.MotorBodyType;
+            IsModified = motorSpecs.IsModified;
+            ModificationDescription = motorSpecs.ModificationDescription;
+        }
     }
 }

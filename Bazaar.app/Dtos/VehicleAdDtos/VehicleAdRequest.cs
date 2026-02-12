@@ -9,7 +9,6 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
         public int CityId { get; set; }
         public int VehicleModelId { get; set; }
         public int ManufactureYear { get; set; }
-        public IFormFile? Thumbnail { get; set; }
         public bool IsUsed { get; set; }
         public FuelType FuelType { get; set; }
         public bool Installment { get; set; }
@@ -22,7 +21,7 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
         public CarSpecsRequest? CarSpecs { get; set; }
         public TruckSpecsRequest? TruckSpecs { get; set; }
         public MotorSpecsRequest? MotorSpecs { get; set; }
-        public List<IFormFile>? Gallery { get; set; }
+        public List<VehicleImageRequest>? Gallery { get; set; }
         public VehicleAd ToModel()
         {
             VehicleAd vehicleAd=  new()

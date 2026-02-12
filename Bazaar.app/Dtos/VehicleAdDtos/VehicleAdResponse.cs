@@ -20,7 +20,7 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
         public CityResponse? City => new(VehicleAd.City ?? new City());
         public ManufacturerModelResponse? VehicleModel => new ManufacturerModelResponse(VehicleAd.VehicleModel ?? new VehicleModel());
         public int ManufactureYear => VehicleAd.ManufactureYear;
-        public string? Thumbnail => VehicleAd.Thumbnail;
+        public string? Thumbnail => VehicleAd.VehicleImages.FirstOrDefault()?.ImagePath;
         public FuelType FuelType => VehicleAd.FuelType;
         public bool Installment => VehicleAd.Installment;
         public decimal Price => VehicleAd.Price;

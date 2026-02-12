@@ -14,11 +14,22 @@ namespace Bazaar.Entityframework.Models.Vehicles
         public int VehicleId { get; set; }
         public virtual VehicleAd? VehicleAd { get; set; }
         public int AxisCount { get; set; }
-        public double BackstorageLenght { get;set; }
+        public double BackstorageLenght { get; set; }
         public double BackstorageHeight { get; set; }
         public TruckBodyType TruckBodyType { get; set; }
         public TrucksUsageType TrucksUsageType { get; set; }
         public bool IsRegistered { get; set; }
-        public double Payload{ get; set; }
+        public double Payload { get; set; }
+        public void MergeWith(TruckSpecs truckSpecs)
+        {
+            AxisCount = truckSpecs.AxisCount;
+            BackstorageLenght = truckSpecs.BackstorageLenght;
+            BackstorageHeight = truckSpecs.BackstorageHeight;
+            TruckBodyType = truckSpecs.TruckBodyType;
+            TrucksUsageType = truckSpecs.TrucksUsageType;
+            IsRegistered = truckSpecs.IsRegistered;
+            IsRegistered = truckSpecs.IsRegistered;
+            Payload = truckSpecs.Payload;
+        }
     }
 }

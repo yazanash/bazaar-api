@@ -11,7 +11,7 @@ namespace Bazaar.app.Services
         public WebPImageService(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
-        }
+        } 
         public async Task<string> SaveImageAsWebP(IFormFile file,string folderName ,string fileNameWithoutExtension)
         {
             var rootPath = _webHostEnvironment.WebRootPath ?? Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot");
@@ -42,5 +42,23 @@ namespace Bazaar.app.Services
             }
             return $"{folderName}/{fileName}";
         }
+        public void MoveFile(string relativeSourcePath, string relativeDestinationPath)
+        {
+            var sourceFullPath = Path.Combine(_webHostEnvironment.WebRootPath, relativeSourcePath);
+            var destFullPath = Path.Combine(_webHostEnvironment.WebRootPath, relativeDestinationPath);
+
+            var destDirectory = Path.GetDirectoryName(destFullPath);
+            if (!Directory.Exists(destDirectory))
+            {
+                Directory.CreateDirectory(destDirectory!);
+            }
+            if (System.IO.File.Exists(sourceFullPath))
+            {
+                if (System.IO.File.Exists(destFullPath))
+                    System.IO.File.Delete(destFullPath);
+                System.IO.File.Move(sourceFullPath, destFullPath);
+            }
+        }
+
     }
 }

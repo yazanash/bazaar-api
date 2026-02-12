@@ -9,7 +9,6 @@ namespace Bazaar.Entityframework.Services
 {
     public interface IUserAdDataService
     {
-        Task<PagedList<VehicleAd>> GetMyFavorites(string userId, int page, int size, string? currentUserId);
         Task<VehicleAd> CreateAsync(VehicleAd entity);
         Task<VehicleAd> UpdateAsync(VehicleAd entity);
         Task<bool> DeleteAsync(int id);

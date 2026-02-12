@@ -19,8 +19,21 @@ namespace Bazaar.Entityframework.Models.Vehicles
         public DriveSystem DriveSystem { get; set; }
         public bool IsModified { get; set; }
         public string ModificationDescription { get; set; } = string.Empty;
-        public int SeatsCount{ get; set; }
+        public int SeatsCount { get; set; }
         public int DoorsCount { get; set; }
         public UsageType UsageType { get; set; }
+
+        public void MergeWith(CarSpecs carSpecs)
+        {
+            Transmission = carSpecs.Transmission;
+            RegistrationType = carSpecs.RegistrationType;
+            CarBodyType = carSpecs.CarBodyType;
+            DriveSystem = carSpecs.DriveSystem;
+            IsModified = carSpecs.IsModified;
+            ModificationDescription = carSpecs.ModificationDescription;
+            SeatsCount = carSpecs.SeatsCount;
+            DoorsCount = carSpecs.DoorsCount;
+            UsageType = carSpecs.UsageType;
+        }
     }
 }

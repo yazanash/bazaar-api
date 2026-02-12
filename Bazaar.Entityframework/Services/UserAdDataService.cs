@@ -49,21 +49,6 @@ namespace Bazaar.Entityframework.Services
             return ad;
         }
 
-        public async Task<PagedList<VehicleAd>> GetMyFavorites(string userId, int page, int size, string? currentUserId)
-        {
-            var query = _appDbContext.UserFavorites
-                        .Where(f => f.UserId == userId)
-                        .OrderByDescending(f => f.CreatedAt)
-                        .Select(f => f.VehicleAd!) 
-                      .Include(x => x.VehicleModel).ThenInclude(x => x!.Manufacturer)
-                        .Include(ad => ad.City)
-                        .Include(ad => ad.UserFavorites.Where(f => f.UserId == currentUserId))
-                        .AsNoTracking();
-            var count = await query.CountAsync();
-            var items = await query.Skip((page - 1) * size).Take(size).ToListAsync();
-            return new PagedList<VehicleAd>(items, count, page, size);
-        }
-
         public async Task<PagedList<VehicleAd>> GetUserAdsAsync(string userId, int page, int size)
         {
             var query = _appDbContext.VehicleAds
@@ -71,6 +56,7 @@ namespace Bazaar.Entityframework.Services
                      .OrderByDescending(ad => ad.PostDate)
                     .Include(x => x.VehicleModel).ThenInclude(x => x!.Manufacturer)
                      .Include(ad => ad.City)
+                     .Include(ad => ad.VehicleImages.FirstOrDefault())
                      .AsNoTracking();
 
             var count = await query.CountAsync();
@@ -81,12 +67,18 @@ namespace Bazaar.Entityframework.Services
 
         public async Task<VehicleAd> UpdateAsync(VehicleAd entity)
         {
-            var exists = await _appDbContext.VehicleAds.AnyAsync(x => x.Id == entity.Id);
-            if (!exists) throw new ResourceNotFoundException(entity.Id, "Ad not found to update");
-            _appDbContext.VehicleAds.Update(entity);
-            entity.PublishStatus = PubStatus.Pending;
+            var exists = await _appDbContext.VehicleAds.Include(x => x.CarSpecs)
+        .Include(x => x.TruckSpecs)
+        .Include(x => x.MotorSpecs).FirstOrDefaultAsync(x => x.Id == entity.Id);
+
+            if (exists==null) throw new ResourceNotFoundException(entity.Id, "Ad not found to update");
+
+            exists.MergeWith(entity);
+            exists.PublishStatus = PubStatus.Pending;
+            _appDbContext.VehicleAds.Update(exists);
             await _appDbContext.SaveChangesAsync();
             return entity;
         }
+
     }
 }

@@ -40,6 +40,7 @@ namespace Bazaar.Entityframework.Services
                         .Include(ad => ad.VehicleModel).ThenInclude(x=>x!.Manufacturer)
                         .Include(ad => ad.City)
                         .Include(ad => ad.UserFavorites.Where(f => f.UserId == currentUserId))
+                        .Include(ad=>ad.VehicleImages.FirstOrDefault())
                         .AsNoTracking();
             var count = await query.CountAsync();
             var items = await query.Skip((page - 1) * size).Take(size).ToListAsync();
@@ -54,6 +55,7 @@ namespace Bazaar.Entityframework.Services
                         .Include(ad => ad.VehicleModel).ThenInclude(x => x!.Manufacturer)
                         .Include(ad => ad.City)
                         .Include(ad => ad.UserFavorites.Where(f => f.UserId == currentUserId))
+                        .Include(ad => ad.VehicleImages.FirstOrDefault())
                         .AsNoTracking();
             var count = await query.CountAsync();
             var items = await query.Skip((page - 1) * size).Take(size).ToListAsync();
@@ -88,6 +90,7 @@ namespace Bazaar.Entityframework.Services
             .Include(ad => ad.User)
                 .ThenInclude(u => u!.Profile)
             .Include(ad => ad.UserFavorites.Where(f => f.UserId == currentUserId))
+            .Include(ad => ad.VehicleImages.FirstOrDefault())
             .OrderByDescending(ad => ad.PublishedAt);
 
             var count = await query.CountAsync();
@@ -152,6 +155,7 @@ namespace Bazaar.Entityframework.Services
                 .Include(ad => ad.VehicleModel).ThenInclude(x => x!.Manufacturer)
                 .Include(v => v.City)
                 .Include(v => v.UserFavorites.Where(f => f.UserId == currentUserId))
+                .Include(ad => ad.VehicleImages.FirstOrDefault())
                 .AsNoTracking();
 
             var count = await query.CountAsync();
