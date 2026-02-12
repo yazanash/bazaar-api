@@ -15,6 +15,7 @@ namespace Bazaar.app.HostBuilders
             services.AddScoped<IDataService<Manufacturer>, ManufacturerDataService>();
             services.AddScoped<IDataService<VehicleModel>, VehicleModelDataService>();
             services.AddScoped<IDataService<City>, CityDataService>();
+            services.AddScoped<IVehicleImageDataService, VehicleImageDataService>();
             return services;
         }
 
