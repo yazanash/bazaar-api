@@ -26,8 +26,7 @@ namespace Bazaar.app.Controllers
         private readonly IDataService<VehicleModel> _vehicleModelDataService;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IVehicleImageDataService _vehicleImageDataService;
-        private readonly ILogger _logger;
-        public MyAdsController(WebPImageService imageService, IUserAdDataService adDataService, IDataService<City> cityDataService, IDataService<Manufacturer> manufacturerDataService, IDataService<VehicleModel> vehicleModelDataService, IWebHostEnvironment webHostEnvironment, IVehicleImageDataService vehicleImageDataService, ILogger logger)
+        public MyAdsController(WebPImageService imageService, IUserAdDataService adDataService, IDataService<City> cityDataService, IDataService<Manufacturer> manufacturerDataService, IDataService<VehicleModel> vehicleModelDataService, IWebHostEnvironment webHostEnvironment, IVehicleImageDataService vehicleImageDataService)
         {
             _imageService = imageService;
             _adDataService = adDataService;
@@ -36,13 +35,11 @@ namespace Bazaar.app.Controllers
             _vehicleModelDataService = vehicleModelDataService;
             _webHostEnvironment = webHostEnvironment;
             _vehicleImageDataService = vehicleImageDataService;
-            _logger = logger;
         }
         [HttpPost]
         public async Task<IActionResult> CreateAd([FromBody]VehicleAdRequest adRequest)
         {
-            try
-            {
+          
 
                 string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (userId == null) return Unauthorized();
@@ -58,12 +55,7 @@ namespace Bazaar.app.Controllers
                 List<VehicleImage> gallery = ProcessAdImages(vehicleAd, adRequest);
                 await _vehicleImageDataService.CreateOrUpdateRangeAsync(createdAd.Id, gallery);
                 return Ok(new { slug = createdAd.Slug });
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(500, "Error deleting file");
-            }
+       
            
         }
         [HttpGet]
@@ -114,27 +106,19 @@ namespace Bazaar.app.Controllers
         [HttpPost("upload-image")]
         public async Task<IActionResult> Upload([FromForm] UploadImageRequest uploadImageRequest)
         {
-            try
-            {
+          
                 if (uploadImageRequest.Image == null || uploadImageRequest.Image.Length == 0)
                 return BadRequest("No image uploaded.");
             string uniqueFileName = $"{Guid.NewGuid()}_{DateTime.Now:yyyyMMddHHmmss}";
             string imageTempUrl = await _imageService.SaveImageAsWebP(uploadImageRequest.Image, "temp", uniqueFileName);
             return Ok(new { Url = imageTempUrl });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("error upload-image with message "+ex.Message);
-                return StatusCode(500, "Error deleting file");
-            }
+           
 
         }
         [HttpDelete("delete-image/{id}")]
         public async Task<IActionResult> DeleteImage(int imageId)
         {
 
-            try
-            {
                 VehicleImage vehicleImage = await _vehicleImageDataService.GetAsync(imageId);
                 string image = vehicleImage.ImagePath;
                 var parts = image.Split('/');
@@ -157,11 +141,7 @@ namespace Bazaar.app.Controllers
                 }
 
                 return NotFound(new { success = false, message = "File not found on server" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { success = false, message = "Error deleting file", error = ex.Message });
-            }
+         
 
         }
         private List<VehicleImage> ProcessAdImages(VehicleAd ad, VehicleAdRequest request)
