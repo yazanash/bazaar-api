@@ -9,7 +9,7 @@ namespace Bazaar.Entityframework.Services
 {
     public interface IVehicleImageDataService
     {
-        Task CreateOrUpdateRangeAsync(int vehicleId, List<VehicleImage> vehicleImage);
+        Task<List<string>> SyncImagesAndGetDeletablesAsync(int vehicleId, List<VehicleImage> vehicleImage);
         Task<VehicleImage> GetAsync(int id);
         Task<bool> DeleteAsync(int id);
     }

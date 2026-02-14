@@ -37,26 +37,24 @@ namespace Bazaar.app.Controllers
             _vehicleImageDataService = vehicleImageDataService;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateAd([FromBody]VehicleAdRequest adRequest)
+        public async Task<IActionResult> CreateAd([FromBody] VehicleAdRequest adRequest)
         {
-          
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+            var city = await _cityDataService.GetByIdAsync(adRequest.CityId);
+            var model = await _vehicleModelDataService.GetByIdAsync(adRequest.VehicleModelId);
+            var manufcturer = await _manufacturerDataService.GetByIdAsync(model.ManufacturerId);
 
-                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (userId == null) return Unauthorized();
-                var city = await _cityDataService.GetByIdAsync(adRequest.CityId);
-                var model = await _vehicleModelDataService.GetByIdAsync(adRequest.VehicleModelId);
-                var manufcturer = await _manufacturerDataService.GetByIdAsync(model.ManufacturerId);
+            VehicleAd vehicleAd = adRequest.ToModel();
+            vehicleAd.UserId = userId;
+            vehicleAd.GenerateSlug(manufcturer.Name, model.Name, city.EnglishName, adRequest.ManufactureYear);
+            VehicleAd createdAd = await _adDataService.CreateAsync(vehicleAd);
 
-                VehicleAd vehicleAd = adRequest.ToModel();
-                vehicleAd.UserId = userId;
-                vehicleAd.GenerateSlug(manufcturer.Name, model.Name, city.EnglishName, adRequest.ManufactureYear);
-                VehicleAd createdAd = await _adDataService.CreateAsync(vehicleAd);
+            List<VehicleImage> gallery = ProcessAdImages(vehicleAd, adRequest);
+            await _vehicleImageDataService.SyncImagesAndGetDeletablesAsync(createdAd.Id, gallery);
+            return Ok(new { slug = createdAd.Slug });
 
-                List<VehicleImage> gallery = ProcessAdImages(vehicleAd, adRequest);
-                await _vehicleImageDataService.CreateOrUpdateRangeAsync(createdAd.Id, gallery);
-                return Ok(new { slug = createdAd.Slug });
-       
-           
+
         }
         [HttpGet]
         public async Task<IActionResult> GetMyAds([FromQuery] int pageNumber, [FromQuery] int pageSize)
@@ -93,7 +91,11 @@ namespace Bazaar.app.Controllers
             VehicleAd updatedAd = await _adDataService.UpdateAsync(vehicleAd);
 
             List<VehicleImage> gallery = ProcessAdImages(vehicleAd, adRequest);
-            await _vehicleImageDataService.CreateOrUpdateRangeAsync(updatedAd.Id, gallery);
+            List<string> imagesToDelete = await _vehicleImageDataService.SyncImagesAndGetDeletablesAsync(updatedAd.Id, gallery);
+            foreach(string img in imagesToDelete)
+            {
+                _imageService.DeleteImage(img);
+            }
             return Ok(new { slug = updatedAd.Slug });
         }
         [HttpDelete("{id}")]
@@ -106,44 +108,15 @@ namespace Bazaar.app.Controllers
         [HttpPost("upload-image")]
         public async Task<IActionResult> Upload([FromForm] UploadImageRequest uploadImageRequest)
         {
-          
-                if (uploadImageRequest.Image == null || uploadImageRequest.Image.Length == 0)
+
+            if (uploadImageRequest.Image == null || uploadImageRequest.Image.Length == 0)
                 return BadRequest("No image uploaded.");
             string uniqueFileName = $"{Guid.NewGuid()}_{DateTime.Now:yyyyMMddHHmmss}";
             string imageTempUrl = await _imageService.SaveImageAsWebP(uploadImageRequest.Image, "temp", uniqueFileName);
             return Ok(new { Url = imageTempUrl });
-           
-
         }
-        [HttpDelete("delete-image/{imageId}")]
-        public async Task<IActionResult> DeleteImage(int imageId)
-        {
-
-                VehicleImage vehicleImage = await _vehicleImageDataService.GetAsync(imageId);
-                string image = vehicleImage.ImagePath;
-                var parts = image.Split('/');
-                if (parts.Length < 2) return BadRequest("Invalid path format");
-
-                string folder = parts[0];
-                string fileName = Path.GetFileName(parts[1]);
-
-                var allowedFolders = new[] { "temp", "ads" };
-                if (!allowedFolders.Contains(folder.ToLower()))
-                    return BadRequest("Access denied to this folder");
-
-                var fullPath = Path.Combine(_webHostEnvironment.WebRootPath, folder, fileName);
-
-                if (System.IO.File.Exists(fullPath))
-                {
-                    System.IO.File.Delete(fullPath);
-                    await _vehicleImageDataService.DeleteAsync(imageId);
-                    return Ok(new { success = true, message = $"Deleted " });
-                }
-
-                return NotFound(new { success = false, message = "File not found on server" });
-         
-
-        }
+        
+      
         private List<VehicleImage> ProcessAdImages(VehicleAd ad, VehicleAdRequest request)
         {
             List<VehicleImage> gallery = new List<VehicleImage>();
@@ -155,7 +128,7 @@ namespace Bazaar.app.Controllers
                     var path = vehicleImage.ImagePath;
                     if (path.StartsWith("temp"))
                     {
-                        string? savedName = ProcessAdImage(path, ad.Slug, (i + 1).ToString());
+                        string? savedName = ProcessAdImage(path, ad.Slug);
                         if (savedName != null)
                             gallery.Add(new VehicleImage { VehicleId = ad.Id, ImagePath = savedName, Order = i, Id = vehicleImage.Id });
                     }
@@ -167,15 +140,15 @@ namespace Bazaar.app.Controllers
             }
             return gallery;
         }
-        private string? ProcessAdImage(string Image, string slug, string suffix)
+        private string? ProcessAdImage(string Image, string slug)
         {
             if (!string.IsNullOrEmpty(Image) && Image.StartsWith("temp"))
             {
-
                 var tempPath = Image;
                 var fileName = Path.GetFileName(tempPath);
+                var uniqueSuffix = DateTime.UtcNow.Ticks.ToString().Substring(10);
                 var extension = Path.GetExtension(tempPath);
-                var savedName = $"ads/{slug}-{suffix}{extension}";
+                var savedName = $"ads/{slug}-{uniqueSuffix}{extension}";
                 _imageService.MoveFile(tempPath, savedName);
                 return savedName;
             }

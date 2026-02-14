@@ -1,4 +1,5 @@
-﻿using SixLabors.ImageSharp;
+﻿using Bazaar.app.Exceptions;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.Processing;
 
@@ -57,6 +58,26 @@ namespace Bazaar.app.Services
                 if (System.IO.File.Exists(destFullPath))
                     System.IO.File.Delete(destFullPath);
                 System.IO.File.Move(sourceFullPath, destFullPath);
+            }
+        }
+        public void DeleteImage(string image)
+        {
+            var parts = image.Split('/');
+            if (parts.Length < 2) throw new InvalidFileFormatException();
+
+            string folder = parts[0];
+            string fileName = Path.GetFileName(parts[1]);
+
+            var allowedFolders = new[] { "temp", "ads" };
+            if (!allowedFolders.Contains(folder.ToLower()))
+                throw new FolderAccessDeniedException();
+
+            var fullPath = Path.Combine(_webHostEnvironment.WebRootPath, folder, fileName);
+
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+
             }
         }
 

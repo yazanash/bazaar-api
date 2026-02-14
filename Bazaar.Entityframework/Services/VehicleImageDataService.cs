@@ -14,12 +14,20 @@ namespace Bazaar.Entityframework.Services
     public class VehicleImageDataService(AppDbContext appDbContext) : IVehicleImageDataService
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task CreateOrUpdateRangeAsync(int vehicleId , List<VehicleImage> incomingImages)
+        public async Task<List<string>> SyncImagesAndGetDeletablesAsync(int vehicleId , List<VehicleImage> incomingImages)
         {
             var existingImages = await _appDbContext.Set<VehicleImage>()
                                      .Where(x => x.VehicleId == vehicleId)
                                      .ToListAsync();
+            var incomingIds = incomingImages.Where(i => i.Id > 0).Select(i => i.Id).ToList();
 
+            var imagesToDelete = existingImages.Where(e => !incomingIds.Contains(e.Id)).ToList();
+            var pathsToDelete = imagesToDelete.Select(i => i.ImagePath).ToList();
+
+            if (imagesToDelete.Any())
+            {
+                _appDbContext.Set<VehicleImage>().RemoveRange(imagesToDelete);
+            }
             foreach (var incoming in incomingImages)
             {
                
@@ -39,7 +47,7 @@ namespace Bazaar.Entityframework.Services
             }
 
             await _appDbContext.SaveChangesAsync();
-
+            return pathsToDelete;
         }
 
         public async Task<bool> DeleteAsync(int id)
