@@ -115,7 +115,7 @@ namespace Bazaar.app.Controllers
            
 
         }
-        [HttpDelete("delete-image/{id}")]
+        [HttpDelete("delete-image/{imageId}")]
         public async Task<IActionResult> DeleteImage(int imageId)
         {
 
