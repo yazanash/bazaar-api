@@ -11,7 +11,7 @@ namespace Bazaar.Entityframework.Services
     {
         Task<Profile> CreateAsync(Profile entity);
         Task<Profile> UpateAsync(Profile entity);
-        Task<Profile> GetUserProfileAsync(string userId);
-        Task<Profile> GetProfileByIdAsync(int id);
+        Task<Profile?> GetUserProfileAsync(string userId);
+        Task<Profile?> GetProfileByIdAsync(int id);
     }
 }

@@ -21,16 +21,14 @@ namespace Bazaar.Entityframework.Services
             return CreatedResult.Entity;
         }
 
-        public async Task<Profile> GetProfileByIdAsync(int id)
+        public async Task<Profile?> GetProfileByIdAsync(int id)
         {
             Profile? profile = await _appDbContext.Set<Profile>().FindAsync(id);
-            if (profile == null) throw new ResourceNotFoundException(id, $"profile with ID {id} was not found.");
             return profile;
         }
-        public async Task<Profile> GetUserProfileAsync(string userId)
+        public async Task<Profile?> GetUserProfileAsync(string userId)
         {
             Profile? profile = await _appDbContext.Set<Profile>().AsNoTracking().FirstOrDefaultAsync(x=>x.UserId ==userId);
-            if (profile == null) throw new UserAssetNotFoundException(userId, $"profile for user with ID {userId} was not found.");
             return profile;
         }
 
