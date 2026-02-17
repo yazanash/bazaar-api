@@ -113,7 +113,7 @@ namespace Bazaar.app.Controllers
                 return BadRequest("No image uploaded.");
             string uniqueFileName = $"{Guid.NewGuid()}_{DateTime.Now:yyyyMMddHHmmss}";
             string imageTempUrl = await _imageService.SaveImageAsWebP(uploadImageRequest.Image, "temp", uniqueFileName);
-            return Ok(new { Url = imageTempUrl });
+            return Ok(new { ImageUrl = imageTempUrl });
         }
         
       
@@ -125,7 +125,7 @@ namespace Bazaar.app.Controllers
                 for (int i = 0; i < request.Gallery.Count; i++)
                 {
                     var vehicleImage = request.Gallery[i];
-                    var path = vehicleImage.ImagePath;
+                    var path = vehicleImage.ImageUrl;
                     if (path.StartsWith("temp"))
                     {
                         string? savedName = ProcessAdImage(path, ad.Slug);

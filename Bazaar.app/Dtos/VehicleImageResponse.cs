@@ -12,7 +12,7 @@ namespace Bazaar.app.Dtos
         }
 
         public int Id => VehicleImage.Id;
-        public string ImagePath =>  VehicleImage.ImagePath;
+        public string ImageUrl =>  VehicleImage.ImagePath;
         public int Order => VehicleImage.Order;
     }
 }
