@@ -13,5 +13,6 @@ namespace Bazaar.app.Dtos.VehicleModelDto
         public int Id => VehicleModel.Id;
         public string Name => $"{VehicleModel.Manufacturer?.Name} / {VehicleModel.Name}";
         public Category Category => VehicleModel.Category;
+        public int ManufacturerId => VehicleModel.ManufacturerId;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Bazaar.app.Dtos.ProfileDtos;
 using Bazaar.Entityframework.Models;
-using Bazaar.Entityframework.Services;
+using Bazaar.Entityframework.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 

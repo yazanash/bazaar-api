@@ -12,6 +12,7 @@ namespace Bazaar.Entityframework.Filters
         public string? Keyword { get; set; }
         public int? CityId { get; set; }
         public int? VehicleModelId { get; set; }
+        public int? ManufacturerId { get; set; }
         public bool? IsUsed { get; set; }
         public FuelType? FuelType { get; set; }
         public bool? Installment { get; set; }

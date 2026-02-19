@@ -1,5 +1,6 @@
 ﻿using Bazaar.Entityframework.DbContext;
 using Bazaar.Entityframework.Models;
+using Bazaar.Entityframework.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

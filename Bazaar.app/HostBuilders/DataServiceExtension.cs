@@ -1,6 +1,7 @@
 ﻿using Bazaar.app.Services;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Services;
+using Bazaar.Entityframework.Services.IServices;
 
 namespace Bazaar.app.HostBuilders
 {
@@ -16,6 +17,9 @@ namespace Bazaar.app.HostBuilders
             services.AddScoped<IDataService<VehicleModel>, VehicleModelDataService>();
             services.AddScoped<IDataService<City>, CityDataService>();
             services.AddScoped<IVehicleImageDataService, VehicleImageDataService>();
+            services.AddScoped<IUserWalletService, UserWalletDataService>();
+            services.AddScoped<IPackageDataService, PackageDataService>();
+            services.AddScoped<IDataService<AdBanners>, AdBannersDataService>();
             return services;
         }
 

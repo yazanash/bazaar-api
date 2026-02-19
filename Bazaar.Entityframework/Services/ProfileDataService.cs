@@ -1,6 +1,7 @@
 ﻿using Bazaar.Entityframework.DbContext;
 using Bazaar.Entityframework.Exceptions;
 using Bazaar.Entityframework.Models;
+using Bazaar.Entityframework.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;

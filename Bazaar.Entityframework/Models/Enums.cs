@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bazaar.Entityframework.Models
 {
+    public enum TransactionType
+    {
+        Featured,
+        AdUsage
+    }
     public enum PostDateFilter
     {
         AnyTime,

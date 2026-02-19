@@ -1,7 +1,7 @@
 ﻿using Bazaar.app.Dtos.CityDtos;
 using Bazaar.app.Dtos.VehicleModelDto;
 using Bazaar.Entityframework.Models;
-using Bazaar.Entityframework.Services;
+using Bazaar.Entityframework.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
