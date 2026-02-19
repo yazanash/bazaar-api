@@ -36,7 +36,7 @@ namespace Bazaar.Entityframework.Services
         public async Task<PagedList<VehicleAd>> GetAllStarredAsync(int page, int size, string? currentUserId)
         {
             var query = _appDbContext.Set<VehicleAd>()
-                            .Where(x => x.Special)
+                            //.Where(x => x.Special)
                         .OrderByDescending(f => f.PublishedAt)
                         .Include(ad => ad.VehicleModel).ThenInclude(x => x!.Manufacturer)
                         .Include(ad => ad.City)
