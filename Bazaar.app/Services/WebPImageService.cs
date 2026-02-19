@@ -53,11 +53,11 @@ namespace Bazaar.app.Services
             {
                 Directory.CreateDirectory(destDirectory!);
             }
-            if (System.IO.File.Exists(sourceFullPath))
+            if (File.Exists(sourceFullPath))
             {
-                if (System.IO.File.Exists(destFullPath))
-                    System.IO.File.Delete(destFullPath);
-                System.IO.File.Move(sourceFullPath, destFullPath);
+                if (File.Exists(destFullPath))
+                    File.Delete(destFullPath);
+                File.Move(sourceFullPath, destFullPath);
             }
         }
         public void DeleteImage(string image)
@@ -68,16 +68,15 @@ namespace Bazaar.app.Services
             string folder = parts[0];
             string fileName = Path.GetFileName(parts[1]);
 
-            var allowedFolders = new[] { "temp", "ads" };
+            var allowedFolders = new[] { "temp", "ads","banners" };
             if (!allowedFolders.Contains(folder.ToLower()))
                 throw new FolderAccessDeniedException();
 
             var fullPath = Path.Combine(_webHostEnvironment.WebRootPath, folder, fileName);
 
-            if (System.IO.File.Exists(fullPath))
+            if (File.Exists(fullPath))
             {
-                System.IO.File.Delete(fullPath);
-
+                File.Delete(fullPath);
             }
         }
 

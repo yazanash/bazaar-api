@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bazaar.Entityframework.Services
+namespace Bazaar.Entityframework.Services.IServices
 {
     public interface IOTPGenerateService
     {

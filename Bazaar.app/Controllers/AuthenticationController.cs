@@ -3,7 +3,7 @@ using Bazaar.app.Dtos;
 using Bazaar.app.Services;
 using Bazaar.app.Services.TesterServices;
 using Bazaar.Entityframework.Models;
-using Bazaar.Entityframework.Services;
+using Bazaar.Entityframework.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

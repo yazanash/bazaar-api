@@ -4,7 +4,7 @@ using Bazaar.app.Services;
 using Bazaar.Entityframework;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Models.Vehicles;
-using Bazaar.Entityframework.Services;
+using Bazaar.Entityframework.Services.IServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;

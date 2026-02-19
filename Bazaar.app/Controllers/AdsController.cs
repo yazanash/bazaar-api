@@ -4,7 +4,7 @@ using Bazaar.app.Helpers;
 using Bazaar.Entityframework;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Models.Vehicles;
-using Bazaar.Entityframework.Services;
+using Bazaar.Entityframework.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -17,6 +17,7 @@ namespace Bazaar.app.Controllers
     public class AdsController : ControllerBase
     {
         private readonly IAdDataService _adDataService;
+      
 
         public AdsController(IAdDataService adDataService)
         {
@@ -31,6 +32,7 @@ namespace Bazaar.app.Controllers
             PagedList <VehicleAdResponse> response = pagedList.MapTo(ad => new VehicleAdResponse(ad, userId));
             return Ok(response);
         }
+       
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAdsByStatus([FromQuery] GetAdsByStatusQueryParams byStatusQueryParams)
         {

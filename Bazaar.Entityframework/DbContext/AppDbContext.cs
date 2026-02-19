@@ -1,4 +1,5 @@
 ﻿using Bazaar.Entityframework.Models;
+using Bazaar.Entityframework.Models.UserWallet;
 using Bazaar.Entityframework.Models.Vehicles;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,11 @@ namespace Bazaar.Entityframework.DbContext
         public DbSet<TruckSpecs> TruckSpecs { get; set; }
         public DbSet<UserFavorite> UserFavorites { get; set; }
         public DbSet<OTPModel> OTPModels { get; set; }
+        public DbSet<AdBanners> AdBanners { get; set; }
+        public DbSet<UserWallet> UserWallets{ get; set; }
+        public DbSet<PackageBundle> PackageBundles { get; set; }
+        public DbSet<CreditTransaction> CreditTransactions{ get; set; }
+        public DbSet<Package> Packages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

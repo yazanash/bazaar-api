@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Bazaar.app.Dtos.PackageDtos;
+using Bazaar.Entityframework.Exceptions;
+using Bazaar.Entityframework.Models;
+using Bazaar.Entityframework.Models.UserWallet;
+using Bazaar.Entityframework.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Bazaar.app.Controllers
 {
@@ -7,39 +12,73 @@ namespace Bazaar.app.Controllers
     [ApiController]
     public class PackagesController : ControllerBase
     {
+        private readonly IPackageDataService _packageDataService;
+        private readonly IUserWalletService _userWalletService;
+
+        public PackagesController(IPackageDataService packageDataService, IUserWalletService userWalletService)
+        {
+            _packageDataService = packageDataService;
+            _userWalletService = userWalletService;
+        }
 
         [HttpGet]
-        public IActionResult GetPackages()
+        public async Task<IActionResult> GetPackages()
         {
-            return Ok();
+            IEnumerable<Package> packages = await _packageDataService.GetAllAsync();
+            var response = packages.Select(x => new PackageResponse(x)).ToList();
+            return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult CreatePackage()
+        public async Task<IActionResult> CreatePackage([FromBody] PackageRequest packageRequest)
         {
-            return Ok();
+            if (packageRequest == null) return BadRequest();
+
+            Package package = packageRequest.ToModel();
+            Package createdPackage = await _packageDataService.CreateAsync(package);
+            return Ok(new PackageResponse(createdPackage));
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdatePackage(int id)
+        public async Task<IActionResult> UpdatePackage(int id, [FromBody] PackageRequest packageRequest)
         {
+            if (packageRequest == null) return BadRequest();
+
+            Package package = packageRequest.ToModel();
+            package.Id = id;
+            Package createdPackage = await _packageDataService.UpdateAsync(package);
+            return Ok(new PackageResponse(createdPackage));
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePackage(int id)
+        {
+            await _packageDataService.DeleteByIdAsync(id);
             return Ok();
         }
 
         [HttpGet("my")]
-        public IActionResult GetMyPackages(int id)
+        public async Task<IActionResult> GetMyPackages()
         {
-            return Ok();
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+            UserWallet userWallet = await _userWalletService.GetUserWallet(userId);
+            return Ok(new UserWalletResponse(userWallet));
         }
         [HttpPost("my")]
-        public IActionResult BuyPackage()
+        public async Task<IActionResult> BuyPackage([FromBody] PackageBundleRequest packageBundleRequest)
         {
-            return Ok();
-        }
-        [HttpDelete("my/{id}")]
-        public IActionResult RemovePackage(int id)
-        {
-            return Ok();
+            try
+            {
+                if (packageBundleRequest == null) return BadRequest();
+                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId == null) return Unauthorized();
+                await _userWalletService.CreatePackageBundle(userId, packageBundleRequest.PackageId);
+                return Ok();
+            }
+            catch (ResourceNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

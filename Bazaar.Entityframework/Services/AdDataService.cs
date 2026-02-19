@@ -4,6 +4,7 @@ using Bazaar.Entityframework.Exceptions;
 using Bazaar.Entityframework.Filters;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Models.Vehicles;
+using Bazaar.Entityframework.Services.IServices;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,12 +36,12 @@ namespace Bazaar.Entityframework.Services
         public async Task<PagedList<VehicleAd>> GetAllStarredAsync(int page, int size, string? currentUserId)
         {
             var query = _appDbContext.Set<VehicleAd>()
-                            .Where(x=>x.Special)
+                            .Where(x => x.Special)
                         .OrderByDescending(f => f.PublishedAt)
-                        .Include(ad => ad.VehicleModel).ThenInclude(x=>x!.Manufacturer)
+                        .Include(ad => ad.VehicleModel).ThenInclude(x => x!.Manufacturer)
                         .Include(ad => ad.City)
                         .Include(ad => ad.UserFavorites.Where(f => f.UserId == currentUserId))
-                        .Include(ad=>ad.VehicleImages)
+                        .Include(ad => ad.VehicleImages)
                         .AsNoTracking();
             var count = await query.CountAsync();
             var items = await query.Skip((page - 1) * size).Take(size).ToListAsync();
@@ -105,9 +106,10 @@ namespace Bazaar.Entityframework.Services
             var adPredicate = PredicateBuilder.New<VehicleAd>(true);
             adPredicate = adPredicate.And(v => v.PublishStatus == PubStatus.Accepted);
 
-            if (!string.IsNullOrEmpty( generalFilter.Keyword)) adPredicate = adPredicate.And(v => v.Description.Contains(generalFilter.Keyword));
+            if (!string.IsNullOrEmpty(generalFilter.Keyword)) adPredicate = adPredicate.And(v => v.Description.Contains(generalFilter.Keyword));
             if (generalFilter.CityId.HasValue) adPredicate = adPredicate.And(v => v.CityId == generalFilter.CityId);
             if (generalFilter.VehicleModelId.HasValue) adPredicate = adPredicate.And(v => v.VehicleModelId == generalFilter.VehicleModelId);
+            if (generalFilter.ManufacturerId.HasValue) adPredicate = adPredicate.And(v => v.VehicleModel != null && v.VehicleModel.ManufacturerId == generalFilter.ManufacturerId);
             if (generalFilter.IsUsed.HasValue) adPredicate = adPredicate.And(v => v.IsUsed == generalFilter.IsUsed);
             if (generalFilter.FuelType.HasValue) adPredicate = adPredicate.And(v => v.FuelType == generalFilter.FuelType);
             if (generalFilter.Installment.HasValue) adPredicate = adPredicate.And(v => v.Installment == generalFilter.Installment);
@@ -193,7 +195,7 @@ namespace Bazaar.Entityframework.Services
                     .ExecuteUpdateAsync(v => v.SetProperty(p => p.FavoritesCount, p => p.FavoritesCount + 1));
 
                 await _appDbContext.SaveChangesAsync();
-                return true; 
+                return true;
             }
         }
     }
