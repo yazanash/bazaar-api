@@ -14,6 +14,7 @@ services:
       - ./appsettings.Production.json:/app/appsettings.Production.json:ro
       - ./wwwroot/ads:/app/wwwroot/ads
       - ./wwwroot/temp:/app/wwwroot/temp
+      - ./wwwroot/banners:/app/wwwroot/banners
     networks:
       - shared_network
 
