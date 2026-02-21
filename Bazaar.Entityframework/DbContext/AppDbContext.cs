@@ -54,7 +54,7 @@ namespace Bazaar.Entityframework.DbContext
 
             builder.Entity<VehicleModel>()
                     .HasOne(m => m.Manufacturer)
-                    .WithMany()
+                    .WithMany(v=>v.VehicleModels)
                     .HasForeignKey(m => m.ManufacturerId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<VehicleAd>()
                    .HasOne(v => v.VehicleModel)
