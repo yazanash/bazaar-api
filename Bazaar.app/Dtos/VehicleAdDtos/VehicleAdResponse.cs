@@ -29,5 +29,6 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
         public int ViewsCount => VehicleAd.ViewsCount;
         public int FavoritesCount => VehicleAd.FavoritesCount;
         public DateTime PostDate => VehicleAd.PublishedAt??DateTime.UtcNow;
+        public bool Featured => VehicleAd.Featured && VehicleAd.FeaturedUntil>DateTime.UtcNow;
     }
 }

@@ -37,7 +37,8 @@ namespace Bazaar.Entityframework.Models.Vehicles
         public int ViewsCount { get; set; }
         public int FavoritesCount { get; set; }
         public virtual ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
-        public bool Special { get; set; }
+        public bool Featured { get; set; }
+        public DateTime FeaturedUntil { get; set; }
         public void GenerateSlug(string? manufacturerName, string? modelName, string? cityEnglishName, int manufactureYear)
         {
 

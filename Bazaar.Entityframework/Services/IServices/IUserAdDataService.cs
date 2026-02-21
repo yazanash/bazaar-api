@@ -14,5 +14,6 @@ namespace Bazaar.Entityframework.Services.IServices
         Task<bool> DeleteAsync(int id);
         Task<VehicleAd> GetByIdAsync(int id);
         Task<PagedList<VehicleAd>> GetUserAdsAsync(string userId, int page, int size);
+        Task<bool> StarAdAsync(int vehicleAdId);
     }
 }

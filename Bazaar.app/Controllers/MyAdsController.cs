@@ -115,8 +115,13 @@ namespace Bazaar.app.Controllers
             string imageTempUrl = await _imageService.SaveImageAsWebP(uploadImageRequest.Image, "temp", uniqueFileName);
             return Ok(new { ImageUrl = imageTempUrl });
         }
-        
-      
+        [HttpPost("star-ad/{id}")]
+        public async Task<IActionResult> StarAd(int id)
+        {
+            bool starred = await _adDataService.StarAdAsync(id);
+            return Ok(new { starred = starred });
+        }
+
         private List<VehicleImage> ProcessAdImages(VehicleAd ad, VehicleAdRequest request)
         {
             List<VehicleImage> gallery = new List<VehicleImage>();

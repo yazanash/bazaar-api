@@ -80,6 +80,17 @@ namespace Bazaar.Entityframework.Services
             await _appDbContext.SaveChangesAsync();
             return entity;
         }
+        public async Task<bool> StarAdAsync(int vehicleAdId)
+        {
+            var rowsAffected = await _appDbContext.VehicleAds
+          .Where(x => x.Id == vehicleAdId)
+          .ExecuteUpdateAsync(setters => setters
+              .SetProperty(v => v.Featured, true)
+              .SetProperty(v => v.FeaturedUntil, DateTime.UtcNow.AddDays(30)));
+
+            if (rowsAffected == 0) throw new ResourceNotFoundException($"Ad with ID {vehicleAdId} was not found.");
+            return true;
+        }
 
     }
 }

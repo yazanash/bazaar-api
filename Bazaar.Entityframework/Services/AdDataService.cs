@@ -35,9 +35,10 @@ namespace Bazaar.Entityframework.Services
 
         public async Task<PagedList<VehicleAd>> GetAllStarredAsync(int page, int size, string? currentUserId)
         {
+            var now = DateTime.UtcNow;
             var query = _appDbContext.Set<VehicleAd>()
-                            //.Where(x => x.Special)
-                        .OrderByDescending(f => f.PublishedAt)
+                       .OrderByDescending(x => x.Featured && x.FeaturedUntil > now)
+                        .ThenByDescending(f => f.PublishedAt)
                         .Include(ad => ad.VehicleModel).ThenInclude(x => x!.Manufacturer)
                         .Include(ad => ad.City)
                         .Include(ad => ad.UserFavorites.Where(f => f.UserId == currentUserId))
@@ -103,6 +104,7 @@ namespace Bazaar.Entityframework.Services
 
         public async Task<PagedList<VehicleAd>> SearchAsync(GeneralFilter generalFilter, ISpecsFilter? specsFilter, int page, int size, string? currentUserId)
         {
+            var now = DateTime.UtcNow;
             var adPredicate = PredicateBuilder.New<VehicleAd>(true);
             adPredicate = adPredicate.And(v => v.PublishStatus == PubStatus.Accepted);
 
@@ -153,7 +155,8 @@ namespace Bazaar.Entityframework.Services
             var query = _appDbContext.VehicleAds
                 .AsExpandable()
                 .Where(adPredicate)
-                .OrderByDescending(v => v.PublishedAt)
+                .OrderByDescending(x => x.Featured && x.FeaturedUntil > now)
+                        .ThenByDescending(f => f.PublishedAt)
                 .Include(ad => ad.VehicleModel).ThenInclude(x => x!.Manufacturer)
                 .Include(v => v.City)
                 .Include(v => v.UserFavorites.Where(f => f.UserId == currentUserId))
