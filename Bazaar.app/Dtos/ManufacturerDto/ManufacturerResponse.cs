@@ -13,6 +13,6 @@ namespace Bazaar.app.Dtos.ManufacturerDto
 
         public int Id => Manufacturer.Id;
         public string Name => Manufacturer.Name;
-        public List<Category> SupportedCategries => Manufacturer.SupportedCategories;
+        public List<Category> SupportedCategories => Manufacturer.SupportedCategories;
     }
 }
