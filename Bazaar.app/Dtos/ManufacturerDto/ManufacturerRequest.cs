@@ -8,7 +8,7 @@ namespace Bazaar.app.Dtos.ManufacturerDto
 
         public Manufacturer ToModel()
         {
-            return new Manufacturer { Name = Name };
+            return new Manufacturer { Name = Name  };
         }
     }
 }

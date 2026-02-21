@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Bazaar.Entityframework.DbContext
 {
@@ -75,6 +76,21 @@ namespace Bazaar.Entityframework.DbContext
                     .HasOne(u => u.Profile)
                     .WithOne()
                     .HasForeignKey<Profile>(p => p.UserId);
+
+            builder.Entity<Manufacturer>(entity =>
+            {
+                entity.Property(e => e.SupportedCategories)
+                    .HasConversion(
+                        v => JsonSerializer.Serialize(v ?? new List<Category>(), (JsonSerializerOptions?)null),
+
+                        v => JsonSerializer.Deserialize<List<Category>>(v, (JsonSerializerOptions?)null) ?? new List<Category>()
+                    )
+                    .Metadata.SetValueComparer(new Microsoft.EntityFrameworkCore.ChangeTracking.ValueComparer<List<Category>>(
+                        (c1, c2) => c1 != null && c2 != null ? c1.SequenceEqual(c2) : c1 == c2,
+                        c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                        c => c.ToList()
+                    ));
+            });
         }
     }
 }

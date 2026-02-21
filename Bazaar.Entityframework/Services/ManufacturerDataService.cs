@@ -24,7 +24,18 @@ namespace Bazaar.Entityframework.Services
 
         public async Task<IEnumerable<Manufacturer>> GetAllAsync()
         {
-            IEnumerable<Manufacturer> manufacturers = await _appDbContext.Set<Manufacturer>().AsNoTracking().ToListAsync();
+            IEnumerable<Manufacturer> manufacturers = await _appDbContext.Set<Manufacturer>()
+                .Include(m => m.VehicleModels)
+        .Select(m => new Manufacturer
+        {
+            Id = m.Id,
+            Name = m.Name,
+            SupportedCategories = m.VehicleModels
+                .Select(vm => vm.Category)
+                .Distinct()
+                .ToList()
+        })
+        .AsNoTracking().ToListAsync();
             return manufacturers;
         }
 

@@ -9,8 +9,6 @@ namespace Bazaar.app.HostBuilders
     {
         public static async Task SeedAsync(AppDbContext context)
         {
-
-
             var filePath = Path.Combine(AppContext.BaseDirectory, "DataSeed.json");
 
             if (!File.Exists(filePath))
@@ -51,9 +49,8 @@ namespace Bazaar.app.HostBuilders
                     {
                         manufacturer = new Manufacturer { Name = mName! };
                         context.Manufacturers.Add(manufacturer);
-                        await context.SaveChangesAsync(); // حفظ لتوليد الـ ID
+                        await context.SaveChangesAsync(); 
                     }
-
                     foreach (var modelJson in mJson.GetProperty("Models").EnumerateArray())
                     {
                         var modelName = modelJson.GetProperty("Name").GetString();
