@@ -12,7 +12,7 @@ namespace Bazaar.app.Dtos.SpecsDtos
             TruckSpecs = truckSpecs;
         }
         public int AxisCount => TruckSpecs.AxisCount;
-        public double BackstorageLenght => TruckSpecs.BackstorageLenght;
+        public double BackstorageLength => TruckSpecs.BackstorageLength;
         public double BackstorageHeight => TruckSpecs.BackstorageHeight;
         public TruckBodyType TruckBodyType => TruckSpecs.TruckBodyType;
         public TrucksUsageType TrucksUsageType => TruckSpecs.TrucksUsageType;

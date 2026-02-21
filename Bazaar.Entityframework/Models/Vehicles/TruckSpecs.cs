@@ -14,7 +14,7 @@ namespace Bazaar.Entityframework.Models.Vehicles
         public int VehicleId { get; set; }
         public virtual VehicleAd? VehicleAd { get; set; }
         public int AxisCount { get; set; }
-        public double BackstorageLenght { get; set; }
+        public double BackstorageLength { get; set; }
         public double BackstorageHeight { get; set; }
         public TruckBodyType TruckBodyType { get; set; }
         public TrucksUsageType TrucksUsageType { get; set; }
@@ -23,7 +23,7 @@ namespace Bazaar.Entityframework.Models.Vehicles
         public void MergeWith(TruckSpecs truckSpecs)
         {
             AxisCount = truckSpecs.AxisCount;
-            BackstorageLenght = truckSpecs.BackstorageLenght;
+            BackstorageLength = truckSpecs.BackstorageLength;
             BackstorageHeight = truckSpecs.BackstorageHeight;
             TruckBodyType = truckSpecs.TruckBodyType;
             TrucksUsageType = truckSpecs.TrucksUsageType;

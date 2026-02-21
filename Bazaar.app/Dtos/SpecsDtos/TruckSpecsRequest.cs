@@ -7,7 +7,7 @@ namespace Bazaar.app.Dtos.SpecsDtos
     public class TruckSpecsRequest
     {
         public int AxisCount { get; set; }
-        public double BackstorageLenght { get; set; }
+        public double BackstorageLength { get; set; }
         public double BackstorageHeight { get; set; }
         public TruckBodyType TruckBodyType { get; set; }
         public TrucksUsageType TrucksUsageType { get; set; }
@@ -19,7 +19,7 @@ namespace Bazaar.app.Dtos.SpecsDtos
             {
                 AxisCount = AxisCount,
                 BackstorageHeight = BackstorageHeight,
-                BackstorageLenght = BackstorageLenght,
+                BackstorageLength = BackstorageLength,
                 IsRegistered = IsRegistered,
                 Payload = Payload,
                 TruckBodyType = TruckBodyType,
