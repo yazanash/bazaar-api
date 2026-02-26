@@ -9,10 +9,9 @@ namespace Bazaar.app.HostBuilders
         {
             services.AddSingleton<EmailService>();
             services.AddScoped<IJwtTokenService, TokenGenerationService>();
-            //services.AddScoped<IOTPGenerateService<OTPModel>, OTPGenerateService>();
             services.AddScoped<IBypassService, BypassService>();
             services.AddScoped<WebPImageService>();
-
+            services.AddScoped<TelegramBotService>();
 
             return services;
         }

@@ -6,6 +6,17 @@ using System.Threading.Tasks;
 
 namespace Bazaar.Entityframework.Models
 {
+    public enum PaymentStatus { Pending, Accepted, Rejected }
+    public enum BotStep
+    {
+        Start,
+        WaitingEmail,
+        ChoosingPackage,  
+        ChoosingGateway,     
+        WaitingReceiptImage,  
+        WaitingConfirmation,  
+        Done
+    }
     public enum TransactionType
     {
         Featured,

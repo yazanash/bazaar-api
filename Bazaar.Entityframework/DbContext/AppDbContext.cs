@@ -32,6 +32,11 @@ namespace Bazaar.Entityframework.DbContext
         public DbSet<CreditTransaction> CreditTransactions{ get; set; }
         public DbSet<Package> Packages { get; set; }
 
+        public DbSet<PaymentGateway> PaymentGateways { get; set; }
+        public DbSet<PaymentRequest> PaymentRequests{ get; set; }
+        public DbSet<TelegramUserState> TelegramUserStates { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
