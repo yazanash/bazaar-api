@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bazaar.Entityframework.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260226134740_AddChatIdAsNoneGeneratedKey")]
-    partial class AddChatIdAsNoneGeneratedKey
+    [Migration("20260226135259_AddIdForUserTelegram")]
+    partial class AddIdForUserTelegram
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -328,6 +328,12 @@ namespace Bazaar.Entityframework.Migrations
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.TelegramUserState", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");
 
@@ -349,7 +355,7 @@ namespace Bazaar.Entityframework.Migrations
                     b.Property<string>("TempReceiptFileId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ChatId");
+                    b.HasKey("Id");
 
                     b.ToTable("TelegramUserStates");
                 });

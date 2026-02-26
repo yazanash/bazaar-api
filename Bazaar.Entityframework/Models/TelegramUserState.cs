@@ -10,8 +10,7 @@ namespace Bazaar.Entityframework.Models
 {
     public class TelegramUserState
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get;set; }
         public long ChatId { get; set; }
         public BotStep Step { get; set; } = BotStep.Start;
         public string? Email { get; set; }

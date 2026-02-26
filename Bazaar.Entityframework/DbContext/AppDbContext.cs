@@ -82,9 +82,7 @@ namespace Bazaar.Entityframework.DbContext
                     .WithOne()
                     .HasForeignKey<Profile>(p => p.UserId);
 
-            builder.Entity<TelegramUserState>()
-      .Property(b => b.ChatId)
-      .ValueGeneratedNever();
+         
         }
     }
 }
