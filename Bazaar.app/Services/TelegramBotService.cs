@@ -51,7 +51,6 @@ namespace Bazaar.app.Services
                     await _bot.SendMessage(msg.Chat.Id, "أهلاً بك في بوت دفع سياراتي 🚗\nالرجاء تزويدنا ببريدك الإلكتروني المسجل في التطبيق:");
                     userState.Step = BotStep.WaitingEmail;
                     await _userStateService.UpdateStateAsync(userState);
-                    await _bot.SendMessage(msg.Chat.Id, "أهلاً بك في بوت دفع سياراتي 🚗\nالرجاء تزويدنا ببريدك الإلكتروني المسجل في التطبيق:");
                     return;
                 }
 
@@ -88,6 +87,10 @@ namespace Bazaar.app.Services
             await _bot.SendMessage(msg.Chat.Id, "تم التعرف على الحساب");
             userState.Email = email;
             var packages = await _packageService.GetAllAsync();
+            if (packages.Count() == 0)
+            {
+                await _bot.SendMessage(msg.Chat.Id, "لا يوجد باقات متاحة حاليا");
+            }
             var buttons = packages.Select(p => new[]
             {
         InlineKeyboardButton.WithCallbackData($"{p.Name} - {p.Price}$", $"pkg_{p.Id}")
@@ -114,6 +117,10 @@ namespace Bazaar.app.Services
                 await _userStateService.UpdateStateAsync(userState);
 
                 var gateways = await _gatewayService.GetAllAsync();
+                if (gateways.Count() == 0)
+                {
+                    await _bot.SendMessage(chatId, "لا يوجد بوابات متاحة حاليا");
+                }
                 var buttons = gateways.Where(g => g.IsActive).Select(g => new[]
                 {
             InlineKeyboardButton.WithCallbackData(g.Name, $"gw_{g.Id}")
