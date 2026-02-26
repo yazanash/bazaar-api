@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bazaar.Entityframework.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260219120322_AddUserWallet")]
-    partial class AddUserWallet
+    [Migration("20260226141928_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,6 +204,91 @@ namespace Bazaar.Entityframework.Migrations
                     b.ToTable("Packages");
                 });
 
+            modelBuilder.Entity("Bazaar.Entityframework.Models.PaymentGateway", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Instructions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentGateways");
+                });
+
+            modelBuilder.Entity("Bazaar.Entityframework.Models.PaymentRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdminNote")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PackageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PackageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PackagePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("PaymentGatewayId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentGatewayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentRequests");
+                });
+
             modelBuilder.Entity("Bazaar.Entityframework.Models.Profile", b =>
                 {
                     b.Property<int>("Id")
@@ -239,6 +324,40 @@ namespace Bazaar.Entityframework.Migrations
                         .IsUnique();
 
                     b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("Bazaar.Entityframework.Models.TelegramUserState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("ChatId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastInteraction")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SelectedGatewayId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SelectedPackageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Step")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TempReceiptFileId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TelegramUserStates");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.UserWallet.CreditTransaction", b =>
@@ -422,7 +541,7 @@ namespace Bazaar.Entityframework.Migrations
                     b.Property<double>("BackstorageHeight")
                         .HasColumnType("float");
 
-                    b.Property<double>("BackstorageLenght")
+                    b.Property<double>("BackstorageLength")
                         .HasColumnType("float");
 
                     b.Property<bool>("IsRegistered")
@@ -485,6 +604,12 @@ namespace Bazaar.Entityframework.Migrations
                     b.Property<int>("FavoritesCount")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Featured")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FeaturedUntil")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("FuelType")
                         .HasColumnType("int");
 
@@ -515,9 +640,6 @@ namespace Bazaar.Entityframework.Migrations
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Special")
-                        .HasColumnType("bit");
 
                     b.Property<double>("UsedKilometers")
                         .HasColumnType("float");
@@ -713,7 +835,7 @@ namespace Bazaar.Entityframework.Migrations
             modelBuilder.Entity("Bazaar.Entityframework.Models.VehicleModel", b =>
                 {
                     b.HasOne("Bazaar.Entityframework.Models.Manufacturer", "Manufacturer")
-                        .WithMany()
+                        .WithMany("VehicleModels")
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -863,6 +985,11 @@ namespace Bazaar.Entityframework.Migrations
             modelBuilder.Entity("Bazaar.Entityframework.Models.AppUser", b =>
                 {
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("Bazaar.Entityframework.Models.Manufacturer", b =>
+                {
+                    b.Navigation("VehicleModels");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Vehicles.VehicleAd", b =>

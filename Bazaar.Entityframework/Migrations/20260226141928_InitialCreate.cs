@@ -6,11 +6,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Bazaar.Entityframework.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AdBanners",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ActivationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdBanners", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -23,6 +39,32 @@ namespace Bazaar.Entityframework.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -40,6 +82,22 @@ namespace Bazaar.Entityframework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CreditTransactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdId = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditTransactions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Manufacturers",
                 columns: table => new
                 {
@@ -53,20 +111,127 @@ namespace Bazaar.Entityframework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Profiles",
+                name: "OTPModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Otp = table.Column<int>(type: "int", nullable: false),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OTPModels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PackageBundles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PackageId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdsLimit = table.Column<int>(type: "int", nullable: false),
+                    FeaturedLimit = table.Column<int>(type: "int", nullable: false),
+                    PackageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PackageBundles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Packages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdLimits = table.Column<int>(type: "int", nullable: false),
+                    FeaturedLimit = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Packages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentGateways",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountNumber = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Instructions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentGateways", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentRequests",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false),
-                    SellerType = table.Column<int>(type: "int", nullable: false)
+                    PackageId = table.Column<int>(type: "int", nullable: false),
+                    PackageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PackagePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PaymentGatewayId = table.Column<int>(type: "int", nullable: false),
+                    PaymentGatewayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiptImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    AdminNote = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Profiles", x => x.Id);
+                    table.PrimaryKey("PK_PaymentRequests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TelegramUserStates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChatId = table.Column<long>(type: "bigint", nullable: false),
+                    Step = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SelectedPackageId = table.Column<int>(type: "int", nullable: true),
+                    SelectedGatewayId = table.Column<int>(type: "int", nullable: true),
+                    TempReceiptFileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastInteraction = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TelegramUserStates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserWallets",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AdsLimit = table.Column<int>(type: "int", nullable: false),
+                    FeatureLimits = table.Column<int>(type: "int", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserWallets", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,59 +253,6 @@ namespace Bazaar.Entityframework.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vehicleModels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ManufacturerId = table.Column<int>(type: "int", nullable: false),
-                    Category = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vehicleModels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_vehicleModels_Manufacturers_ManufacturerId",
-                        column: x => x.ManufacturerId,
-                        principalTable: "Manufacturers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProfileId = table.Column<int>(type: "int", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Profiles_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "Profiles",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -229,6 +341,51 @@ namespace Bazaar.Entityframework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Profiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    SellerType = table.Column<int>(type: "int", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Profiles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "vehicleModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ManufacturerId = table.Column<int>(type: "int", nullable: false),
+                    Category = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_vehicleModels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_vehicleModels_Manufacturers_ManufacturerId",
+                        column: x => x.ManufacturerId,
+                        principalTable: "Manufacturers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VehicleAds",
                 columns: table => new
                 {
@@ -237,9 +394,7 @@ namespace Bazaar.Entityframework.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CityId = table.Column<int>(type: "int", nullable: false),
-                    ManufacturerId = table.Column<int>(type: "int", nullable: false),
                     VehicleModelId = table.Column<int>(type: "int", nullable: false),
                     ManufactureYear = table.Column<int>(type: "int", nullable: false),
                     IsUsed = table.Column<bool>(type: "bit", nullable: false),
@@ -255,7 +410,8 @@ namespace Bazaar.Entityframework.Migrations
                     PublishedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
                     FavoritesCount = table.Column<int>(type: "int", nullable: false),
-                    Special = table.Column<bool>(type: "bit", nullable: false)
+                    Featured = table.Column<bool>(type: "bit", nullable: false),
+                    FeaturedUntil = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -270,12 +426,6 @@ namespace Bazaar.Entityframework.Migrations
                         name: "FK_VehicleAds_Cities_CityId",
                         column: x => x.CityId,
                         principalTable: "Cities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_VehicleAds_Manufacturers_ManufacturerId",
-                        column: x => x.ManufacturerId,
-                        principalTable: "Manufacturers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -340,7 +490,7 @@ namespace Bazaar.Entityframework.Migrations
                 {
                     VehicleId = table.Column<int>(type: "int", nullable: false),
                     AxisCount = table.Column<int>(type: "int", nullable: false),
-                    BackstorageLenght = table.Column<double>(type: "float", nullable: false),
+                    BackstorageLength = table.Column<double>(type: "float", nullable: false),
                     BackstorageHeight = table.Column<double>(type: "float", nullable: false),
                     TruckBodyType = table.Column<int>(type: "int", nullable: false),
                     TrucksUsageType = table.Column<int>(type: "int", nullable: false),
@@ -390,7 +540,8 @@ namespace Bazaar.Entityframework.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VehicleId = table.Column<int>(type: "int", nullable: false)
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -436,16 +587,17 @@ namespace Bazaar.Entityframework.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_ProfileId",
-                table: "AspNetUsers",
-                column: "ProfileId");
-
-            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profiles_UserId",
+                table: "Profiles",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserFavorites_VehicleAdId",
@@ -456,11 +608,6 @@ namespace Bazaar.Entityframework.Migrations
                 name: "IX_VehicleAds_CityId",
                 table: "VehicleAds",
                 column: "CityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VehicleAds_ManufacturerId",
-                table: "VehicleAds",
-                column: "ManufacturerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VehicleAds_UserId",
@@ -487,6 +634,9 @@ namespace Bazaar.Entityframework.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AdBanners");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -505,13 +655,40 @@ namespace Bazaar.Entityframework.Migrations
                 name: "CarSpecs");
 
             migrationBuilder.DropTable(
+                name: "CreditTransactions");
+
+            migrationBuilder.DropTable(
                 name: "MotorSpecs");
+
+            migrationBuilder.DropTable(
+                name: "OTPModels");
+
+            migrationBuilder.DropTable(
+                name: "PackageBundles");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
+
+            migrationBuilder.DropTable(
+                name: "PaymentGateways");
+
+            migrationBuilder.DropTable(
+                name: "PaymentRequests");
+
+            migrationBuilder.DropTable(
+                name: "Profiles");
+
+            migrationBuilder.DropTable(
+                name: "TelegramUserStates");
 
             migrationBuilder.DropTable(
                 name: "TruckSpecs");
 
             migrationBuilder.DropTable(
                 name: "UserFavorites");
+
+            migrationBuilder.DropTable(
+                name: "UserWallets");
 
             migrationBuilder.DropTable(
                 name: "VehicleImage");
@@ -530,9 +707,6 @@ namespace Bazaar.Entityframework.Migrations
 
             migrationBuilder.DropTable(
                 name: "vehicleModels");
-
-            migrationBuilder.DropTable(
-                name: "Profiles");
 
             migrationBuilder.DropTable(
                 name: "Manufacturers");

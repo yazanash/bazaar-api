@@ -46,7 +46,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdBanners", (string)null);
+                    b.ToTable("AdBanners");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.AppUser", b =>
@@ -133,7 +133,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Manufacturer", b =>
@@ -150,7 +150,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manufacturers", (string)null);
+                    b.ToTable("Manufacturers");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.OTPModel", b =>
@@ -172,7 +172,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OTPModels", (string)null);
+                    b.ToTable("OTPModels");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Package", b =>
@@ -198,7 +198,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Packages", (string)null);
+                    b.ToTable("Packages");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.PaymentGateway", b =>
@@ -234,7 +234,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentGateways", (string)null);
+                    b.ToTable("PaymentGateways");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.PaymentRequest", b =>
@@ -283,7 +283,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentRequests", (string)null);
+                    b.ToTable("PaymentRequests");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Profile", b =>
@@ -320,7 +320,7 @@ namespace Bazaar.Entityframework.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Profiles", (string)null);
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.TelegramUserState", b =>
@@ -354,7 +354,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TelegramUserStates", (string)null);
+                    b.ToTable("TelegramUserStates");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.UserWallet.CreditTransaction", b =>
@@ -380,7 +380,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CreditTransactions", (string)null);
+                    b.ToTable("CreditTransactions");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.UserWallet.PackageBundle", b =>
@@ -416,7 +416,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PackageBundles", (string)null);
+                    b.ToTable("PackageBundles");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.UserWallet.UserWallet", b =>
@@ -435,7 +435,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("UserWallets", (string)null);
+                    b.ToTable("UserWallets");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.VehicleModel", b =>
@@ -460,7 +460,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasIndex("ManufacturerId");
 
-                    b.ToTable("vehicleModels", (string)null);
+                    b.ToTable("vehicleModels");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Vehicles.CarSpecs", b =>
@@ -498,7 +498,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("VehicleId");
 
-                    b.ToTable("CarSpecs", (string)null);
+                    b.ToTable("CarSpecs");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Vehicles.MotorSpecs", b =>
@@ -524,7 +524,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("VehicleId");
 
-                    b.ToTable("MotorSpecs", (string)null);
+                    b.ToTable("MotorSpecs");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Vehicles.TruckSpecs", b =>
@@ -555,7 +555,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasKey("VehicleId");
 
-                    b.ToTable("TruckSpecs", (string)null);
+                    b.ToTable("TruckSpecs");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Vehicles.UserFavorite", b =>
@@ -573,7 +573,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasIndex("VehicleAdId");
 
-                    b.ToTable("UserFavorites", (string)null);
+                    b.ToTable("UserFavorites");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Vehicles.VehicleAd", b =>
@@ -659,7 +659,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasIndex("VehicleModelId");
 
-                    b.ToTable("VehicleAds", (string)null);
+                    b.ToTable("VehicleAds");
                 });
 
             modelBuilder.Entity("Bazaar.Entityframework.Models.Vehicles.VehicleImage", b =>
@@ -684,7 +684,7 @@ namespace Bazaar.Entityframework.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("VehicleImage", (string)null);
+                    b.ToTable("VehicleImage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
