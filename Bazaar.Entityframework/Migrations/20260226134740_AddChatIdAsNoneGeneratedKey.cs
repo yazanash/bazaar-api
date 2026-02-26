@@ -1,0 +1,36 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace Bazaar.Entityframework.Migrations
+{
+    /// <inheritdoc />
+    public partial class AddChatIdAsNoneGeneratedKey : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<long>(
+                name: "ChatId",
+                table: "TelegramUserStates",
+                type: "bigint",
+                nullable: false,
+                oldClrType: typeof(long),
+                oldType: "bigint")
+                .OldAnnotation("SqlServer:Identity", "1, 1");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<long>(
+                name: "ChatId",
+                table: "TelegramUserStates",
+                type: "bigint",
+                nullable: false,
+                oldClrType: typeof(long),
+                oldType: "bigint")
+                .Annotation("SqlServer:Identity", "1, 1");
+        }
+    }
+}
