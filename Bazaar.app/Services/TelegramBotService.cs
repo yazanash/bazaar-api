@@ -51,6 +51,7 @@ namespace Bazaar.app.Services
                     await _bot.SendMessage(msg.Chat.Id, "أهلاً بك في بوت دفع سياراتي 🚗\nالرجاء تزويدنا ببريدك الإلكتروني المسجل في التطبيق:");
                     userState.Step = BotStep.WaitingEmail;
                     await _userStateService.UpdateStateAsync(userState);
+                    await _bot.SendMessage(msg.Chat.Id, "أهلاً بك في بوت دفع سياراتي 🚗\nالرجاء تزويدنا ببريدك الإلكتروني المسجل في التطبيق:");
                     return;
                 }
 
@@ -84,6 +85,7 @@ namespace Bazaar.app.Services
                 await _bot.SendMessage(msg.Chat.Id, "❌ هذا البريد غير مسجل لدينا، تأكد من الحساب الصحيح:");
                 return;
             }
+            await _bot.SendMessage(msg.Chat.Id, "تم التعرف على الحساب");
             userState.Email = email;
             var packages = await _packageService.GetAllAsync();
             var buttons = packages.Select(p => new[]
@@ -96,6 +98,7 @@ namespace Bazaar.app.Services
 
             userState.Step = BotStep.ChoosingPackage;
             await _userStateService.UpdateStateAsync(userState);
+            await _bot.SendMessage(msg.Chat.Id, "تم تحديث الحالة");
         }
         private async Task HandleCallback(CallbackQuery query)
         {
