@@ -1,6 +1,7 @@
 ﻿using Bazaar.app.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using Telegram.Bot.Types;
 
 namespace Bazaar.app.Controllers
@@ -16,9 +17,25 @@ namespace Bazaar.app.Controllers
             _telegramBotService = telegramBotService;
         }
         [HttpPost("update")]
-        public async Task<IActionResult> ReceiveUpdate([FromBody] Update update)
+        public async Task<IActionResult> ReceiveUpdate([FromBody] JsonElement rawJson)
         {
-            await _telegramBotService.HandleUpdate(update);
+            try
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+
+                var update = JsonSerializer.Deserialize<Update>(rawJson.GetRawText(), options);
+
+                if (update != null)
+                {
+                    await _telegramBotService.HandleUpdate(update);
+                }
+            }
+            catch (Exception)
+            {
+            }
             return Ok();
         }
     }
