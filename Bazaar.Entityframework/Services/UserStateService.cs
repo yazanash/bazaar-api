@@ -37,21 +37,27 @@ namespace Bazaar.Entityframework.Services
             }
             else
             {
-                entity.Step = BotStep.Start;
-                entity.Email = null;
-                entity.SelectedPackageId = null;
-                entity.SelectedGatewayId = null;
-                entity.TempReceiptFileId = null;
-                _dbContext.Set<TelegramUserState>().Update(entity);
-                await _dbContext.SaveChangesAsync();
+                await _dbContext.Set<TelegramUserState>()
+          .Where(e => e.ChatId == chatId)
+          .ExecuteUpdateAsync(s => s
+              .SetProperty(p => p.Step, BotStep.Start));
             }
                 
         }
 
         public async Task UpdateStateAsync(TelegramUserState state)
         {
-            _dbContext.Set<TelegramUserState>().Update(state);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Set<TelegramUserState>()
+         .Where(e => e.Id == state.Id)
+         .ExecuteUpdateAsync(s => s
+             .SetProperty(p => p.Step, state.Step)
+             .SetProperty(p => p.Email, state.Email)
+             .SetProperty(p => p.SelectedPackageId, state.SelectedPackageId)
+             .SetProperty(p => p.SelectedGatewayId, state.SelectedGatewayId)
+             .SetProperty(p => p.TempReceiptFileId, state.TempReceiptFileId)
+             .SetProperty(p => p.LastInteraction, DateTime.UtcNow)
+         );
+
         }
     }
 }
