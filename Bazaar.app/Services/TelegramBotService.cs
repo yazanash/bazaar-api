@@ -84,7 +84,6 @@ namespace Bazaar.app.Services
                 await _bot.SendMessage(msg.Chat.Id, "❌ هذا البريد غير مسجل لدينا، تأكد من الحساب الصحيح:");
                 return;
             }
-            await _bot.SendMessage(msg.Chat.Id, "تم التعرف على الحساب");
             userState.Email = email;
             var packages = await _packageService.GetAllAsync();
             if (packages.Count() == 0)
@@ -101,7 +100,6 @@ namespace Bazaar.app.Services
 
             userState.Step = BotStep.ChoosingPackage;
             await _userStateService.UpdateStateAsync(userState);
-            await _bot.SendMessage(msg.Chat.Id, "تم تحديث الحالة");
         }
         private async Task HandleCallback(CallbackQuery query)
         {
