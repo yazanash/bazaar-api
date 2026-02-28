@@ -147,8 +147,8 @@ namespace Bazaar.app.Services
             {
                 await _bot.EditMessageText(chatId, query.Message.MessageId, "⏳ جاري معالجة طلبك، يرجى الانتظار...");
 
-                try
-                {
+                //try
+                //{
                     string localPath = await SaveReceiptImage(userState.TempReceiptFileId!);
 
                     var package = await _packageService.GetByIdAsync(userState.SelectedPackageId!.Value);
@@ -173,11 +173,11 @@ namespace Bazaar.app.Services
 
                     await _userStateService.ResetStateAsync(chatId);
                     await _bot.SendMessage(chatId, "✅ تم إرسال طلبك بنجاح! سيتم مراجعته من قبل الإدارة وتفعيل باقتك قريباً.");
-                }
-                catch (Exception)
-                {
-                    await _bot.SendMessage(chatId, "❌ حدث خطأ أثناء حفظ الطلب، يرجى المحاولة مرة أخرى.");
-                }
+                //}
+                //catch (Exception)
+                //{
+                //    await _bot.SendMessage(chatId, "❌ حدث خطأ أثناء حفظ الطلب، يرجى المحاولة مرة أخرى.");
+                //}
             }
             else if (data == "reset")
             {
