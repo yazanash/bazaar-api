@@ -41,7 +41,7 @@ namespace Bazaar.Entityframework.Services
 
         public async Task<Manufacturer> GetByIdAsync(int id)
         {
-            Manufacturer? manufacturer = await _appDbContext.Set<Manufacturer>().FindAsync(id);
+            Manufacturer? manufacturer = await _appDbContext.Set<Manufacturer>().Include(m => m.VehicleModels).FirstOrDefaultAsync(x=>x.Id ==id);
             if (manufacturer == null) throw new ResourceNotFoundException(id, $"Manufacturer with ID {id} was not found.");
             return manufacturer;
         }

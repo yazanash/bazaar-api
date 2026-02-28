@@ -38,7 +38,7 @@ namespace Bazaar.app.Controllers
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             PagedList<VehicleAd> pagedList = await _adDataService.GetByPostStatusAsync(byStatusQueryParams.PageNumber, byStatusQueryParams.PageSize, userId, byStatusQueryParams.PubStatus);
-            PagedList<VehicleAdResponse> response = pagedList.MapTo(ad => new VehicleAdResponse(ad, userId));
+            PagedList<VehicleAdAdminResponse> response = pagedList.MapTo(ad => new VehicleAdAdminResponse(ad));
             return Ok(response);
         }
         [HttpGet("home")]

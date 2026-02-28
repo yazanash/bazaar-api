@@ -24,6 +24,13 @@ namespace Bazaar.app.Controllers
             IEnumerable<ManufacturerResponse> response = manufacturers.Select(c => new ManufacturerResponse(c)).ToList();
             return Ok(response);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetManufacturerById(int id)
+        {
+            Manufacturer manufacturer = await _dataService.GetByIdAsync(id);
+            ManufacturerModelsResponse response =new ManufacturerModelsResponse(manufacturer);
+            return Ok(response);
+        }
         [HttpPost]
         public async Task<IActionResult> CreateManufacturer([FromBody] ManufacturerRequest manufacturerRequest)
         {
