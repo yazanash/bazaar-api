@@ -135,10 +135,11 @@ namespace Bazaar.app.Services
                 userState.SelectedGatewayId = gwId;
                 userState.Step = BotStep.WaitingReceiptImage;
                 await _userStateService.UpdateStateAsync(userState);
-
+                var package = await _packageService.GetByIdAsync(userState.SelectedPackageId!.Value);
                 string instruction = $"💎 *{gateway.Name}*\n\n" +
                                      $"📍 معلومات الحساب:\n`{gateway.AccountNumber}`\n\n" +
                                      $"📝 تعليمات:\n{gateway.Instructions}\n\n" +
+                                     $"لقد اخترت : {package.Name} بسعر : {package.Price} $ \n\n"+
                                      "📸 يرجى إرسال *صورة الوصل* الآن:";
 
                 await _bot.SendMessage(chatId, instruction, parseMode: ParseMode.Markdown);
