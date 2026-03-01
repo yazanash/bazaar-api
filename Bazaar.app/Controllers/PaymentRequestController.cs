@@ -22,9 +22,8 @@ namespace Bazaar.app.Controllers
             _paymentRequestService = paymentRequestService;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAdDetails(string slug)
+        public async Task<IActionResult> GetAdDetails()
         {
-            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             IEnumerable<PaymentRequest> requests = await _paymentRequestService.GetPendingRequestsAsync();
             var response = requests.Select(x=>new PaymentRequestResponse(x)).ToList();
             return Ok(response);
