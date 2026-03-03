@@ -75,7 +75,7 @@ namespace Bazaar.app.Controllers
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == id)
-                return Forbid("you can't remove yourself");
+                return BadRequest("you can't remove yourself");
 
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
