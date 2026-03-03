@@ -1,5 +1,6 @@
 ﻿using Bazaar.app.Helpers;
 using Bazaar.app.HostBuilders;
+using Bazaar.app.Services;
 using Bazaar.Entityframework.DbContext;
 using Bazaar.Entityframework.Models;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
 });
+builder.Services.AddHostedService<ImageCleanupService>();
 builder.Services.AddDataServices();
 builder.Services.AddSystemServices();
 builder.Services.AddEndpointsApiExplorer();
