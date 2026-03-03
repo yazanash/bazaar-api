@@ -167,7 +167,8 @@ namespace Bazaar.app.Services
                         PaymentGatewayName = gateway.Name,
                         ReceiptImagePath = localPath,
                         Status = PaymentStatus.Pending,
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = DateTime.UtcNow,
+                        ChatId = chatId,
                     };
 
                     await _paymentRequestService.CreateRequestAsync(request);
@@ -216,6 +217,14 @@ namespace Bazaar.app.Services
                 await _bot.DownloadFile(file.FilePath!, saveFileStream);
             }
             return $"/telegram/{fileName}";
+        }
+        public async Task HandelRequestDenied(long chatId,string adminNote)
+        {
+            await _bot.SendMessage(chatId, $"عذرا تم رفض الطلب \n\n {adminNote}");
+        }
+        public async Task HandelRequestAccepted(long chatId)
+        {
+            await _bot.SendMessage(chatId, "تم تفعيل الباقة بنجاح");
         }
     }
 }

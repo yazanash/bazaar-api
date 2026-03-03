@@ -9,6 +9,7 @@ namespace Bazaar.Entityframework.Models
     public class PaymentRequest
     {
         public int Id { get; set; }
+        public long ChatId { get; set; }
         public string UserId { get; set; } = string.Empty;
         public int PackageId { get; set; }
         public string? PackageName { get; set; }

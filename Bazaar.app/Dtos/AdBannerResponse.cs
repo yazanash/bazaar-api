@@ -9,11 +9,13 @@ namespace Bazaar.app.Dtos
         public AdBannerResponse(AdBanners adBanners)
         {
             AdBanners = adBanners;
+            IsActive = DateTime.Now >= adBanners.ActivationDate && DateTime.Now <= adBanners.ExpirationDate;
         }
         public int Id => AdBanners.Id;
         public string ImageUrl => AdBanners.ImageUrl;
         public string Link => AdBanners.Link;
         public DateTime ExpirationDate => AdBanners.ExpirationDate;
         public DateTime ActivationDate => AdBanners.ActivationDate;
+        public bool IsActive { get; set; }
     }
 }

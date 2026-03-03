@@ -12,5 +12,6 @@ namespace Bazaar.Entityframework.Services.IServices
         Task<PaymentRequest> CreateRequestAsync(PaymentRequest request);
         Task<bool> UpdateStatusAsync(int requestId, PaymentStatus newStatus, string? note);
         Task<IEnumerable<PaymentRequest>> GetPendingRequestsAsync();
+        Task<PaymentRequest> GetPaymentRequest(int id);
     }
 }

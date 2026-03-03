@@ -17,6 +17,7 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
         public int Id => VehicleAd.Id;
         public ManufacturerModelResponse? VehicleModel => new ManufacturerModelResponse(VehicleAd.VehicleModel ?? new VehicleModel());
         public decimal Price => VehicleAd.Price;
+        public string? Thumbnail => VehicleAd.VehicleImages.FirstOrDefault()?.ImagePath;
         public Category Category => VehicleAd.Category;
         public string Description => VehicleAd.Description;
         public string Name => VehicleAd.User?.Profile?.Name ?? "";

@@ -22,6 +22,14 @@ namespace Bazaar.Entityframework.Services
             return CreatedResult.Entity;
         }
 
+        public async Task<PaymentRequest> GetPaymentRequest(int id)
+        {
+            PaymentRequest? paymentRequest = await _context.Set<PaymentRequest>().FindAsync(id);
+            if (paymentRequest == null) throw new ResourceNotFoundException(id, $"City with ID {id} was not found.");
+            return paymentRequest;
+        }
+       
+
         public async Task<IEnumerable<PaymentRequest>> GetPendingRequestsAsync()
         {
             IEnumerable<PaymentRequest> requests = await _context.Set<PaymentRequest>().Where(x=>x.Status == PaymentStatus.Pending).AsNoTracking().ToListAsync();

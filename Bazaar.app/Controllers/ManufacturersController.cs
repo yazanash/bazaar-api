@@ -2,6 +2,7 @@
 using Bazaar.app.Dtos.ManufacturerDto;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace Bazaar.app.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ManufacturersController : ControllerBase
     {
         private readonly IDataService<Manufacturer> _dataService;

@@ -5,6 +5,7 @@ using Bazaar.Entityframework;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Models.Vehicles;
 using Bazaar.Entityframework.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -32,7 +33,7 @@ namespace Bazaar.app.Controllers
             PagedList <VehicleAdResponse> response = pagedList.MapTo(ad => new VehicleAdResponse(ad, userId));
             return Ok(response);
         }
-       
+        [Authorize(Roles = "Admin")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAdsByStatus([FromQuery] GetAdsByStatusQueryParams byStatusQueryParams)
         {
@@ -66,7 +67,7 @@ namespace Bazaar.app.Controllers
             await _adDataService.ToggleVehicleFavoriteAsync(likeRequest.Id, userId);
             return Ok();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]/{id}")]
         public async Task<IActionResult> ChangeAdStatus(int id, [FromBody] AdStatusRequest adStatusRequest)
         {

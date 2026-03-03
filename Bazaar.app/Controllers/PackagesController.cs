@@ -3,6 +3,7 @@ using Bazaar.Entityframework.Exceptions;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Models.UserWallet;
 using Bazaar.Entityframework.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -10,6 +11,7 @@ namespace Bazaar.app.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class PackagesController : ControllerBase
     {
         private readonly IPackageDataService _packageDataService;
@@ -28,7 +30,7 @@ namespace Bazaar.app.Controllers
             var response = packages.Select(x => new PackageResponse(x)).ToList();
             return Ok(response);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreatePackage([FromBody] PackageRequest packageRequest)
         {
@@ -38,7 +40,7 @@ namespace Bazaar.app.Controllers
             Package createdPackage = await _packageDataService.CreateAsync(package);
             return Ok(new PackageResponse(createdPackage));
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePackage(int id, [FromBody] PackageRequest packageRequest)
         {
@@ -49,6 +51,7 @@ namespace Bazaar.app.Controllers
             Package createdPackage = await _packageDataService.UpdateAsync(package);
             return Ok(new PackageResponse(createdPackage));
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePackage(int id)
         {

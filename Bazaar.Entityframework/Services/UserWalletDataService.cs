@@ -76,11 +76,28 @@ namespace Bazaar.Entityframework.Services
         {
             var now = DateTime.UtcNow;
             var userWallet = await _appDbContext.Set<UserWallet>()
-                .Where(b => b.UserId == userId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(b => b.UserId == userId);
+
             if (userWallet != null) return userWallet;
 
-            return new UserWallet { UserId = userId, AdsLimit = 0, FeatureLimits = 0, ExpiryDate = DateTime.UtcNow };
+            var initialWallet = new UserWallet
+            {
+                UserId = userId,
+                AdsLimit = 1,      
+                FeatureLimits = 0,
+                ExpiryDate = now.AddDays(30) 
+            };
+
+            try
+            {
+                await _appDbContext.Set<UserWallet>().AddAsync(initialWallet);
+                await _appDbContext.SaveChangesAsync();
+                return initialWallet;
+            }
+            catch
+            {
+                return initialWallet;
+            }
         }
         public async Task<PackageBundle> CreatePackageBundle(string userId, int packageId)
         {

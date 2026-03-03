@@ -4,6 +4,7 @@ using Bazaar.app.Dtos.VehicleAdDtos;
 using Bazaar.app.Services;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +15,14 @@ namespace Bazaar.app.Controllers
     public class AdBannersController : ControllerBase
     {
         private readonly IDataService<AdBanners> _dataService;
+        private readonly IAdBannerAdminService _adBannerAdminService;
         private readonly WebPImageService _webPImageService;
 
-        public AdBannersController(IDataService<AdBanners> dataService, WebPImageService webPImageService)
+        public AdBannersController(IDataService<AdBanners> dataService, WebPImageService webPImageService, IAdBannerAdminService adBannerAdminService)
         {
             _dataService = dataService;
             _webPImageService = webPImageService;
+            _adBannerAdminService = adBannerAdminService;
         }
         [HttpGet]
         public async Task<IActionResult> GetAdBanners()
@@ -28,6 +31,14 @@ namespace Bazaar.app.Controllers
             var response = banners.Select(x=>new AdBannerResponse(x)).ToList();
             return Ok(response);
         }
+        [HttpGet("admin")]
+        public async Task<IActionResult> GetAdminAdBanners()
+        {
+            IEnumerable<AdBanners> banners = await _adBannerAdminService.GetAllForAdminAsync();
+            var response = banners.Select(x => new AdBannerResponse(x)).ToList();
+            return Ok(response);
+        }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateAdBanners([FromForm] AdBannerRequest adBannerRequest)
         {
@@ -39,6 +50,7 @@ namespace Bazaar.app.Controllers
             AdBanners createdAdBanner = await _dataService.CreateAsync(adBanner);
             return Ok(new AdBannerResponse(createdAdBanner));
         }
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAdBanners(int id, [FromForm] AdBannerRequest adBannerRequest)
         {

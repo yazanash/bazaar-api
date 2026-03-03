@@ -26,7 +26,8 @@ namespace Bazaar.app.Controllers
         private readonly IDataService<VehicleModel> _vehicleModelDataService;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IVehicleImageDataService _vehicleImageDataService;
-        public MyAdsController(WebPImageService imageService, IUserAdDataService adDataService, IDataService<City> cityDataService, IDataService<Manufacturer> manufacturerDataService, IDataService<VehicleModel> vehicleModelDataService, IWebHostEnvironment webHostEnvironment, IVehicleImageDataService vehicleImageDataService)
+        private readonly IUserWalletService _userWalletService ;
+        public MyAdsController(WebPImageService imageService, IUserAdDataService adDataService, IDataService<City> cityDataService, IDataService<Manufacturer> manufacturerDataService, IDataService<VehicleModel> vehicleModelDataService, IWebHostEnvironment webHostEnvironment, IVehicleImageDataService vehicleImageDataService, IUserWalletService userWalletService)
         {
             _imageService = imageService;
             _adDataService = adDataService;
@@ -35,6 +36,7 @@ namespace Bazaar.app.Controllers
             _vehicleModelDataService = vehicleModelDataService;
             _webHostEnvironment = webHostEnvironment;
             _vehicleImageDataService = vehicleImageDataService;
+            _userWalletService = userWalletService;
         }
         [HttpPost]
         public async Task<IActionResult> CreateAd([FromBody] VehicleAdRequest adRequest)
@@ -52,6 +54,7 @@ namespace Bazaar.app.Controllers
 
             List<VehicleImage> gallery = ProcessAdImages(vehicleAd, adRequest);
             await _vehicleImageDataService.SyncImagesAndGetDeletablesAsync(createdAd.Id, gallery);
+            await _userWalletService.ConsumeAdCredit(userId, createdAd.Id);
             return Ok(new { slug = createdAd.Slug });
 
 
@@ -118,8 +121,11 @@ namespace Bazaar.app.Controllers
         [HttpPost("star-ad/{id}")]
         public async Task<IActionResult> StarAd(int id)
         {
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
             bool starred = await _adDataService.StarAdAsync(id);
-            return Ok(new { starred = starred });
+            await _userWalletService.ConsumeFeatureCredit(userId, id);
+            return Ok(new { starred });
         }
 
         private List<VehicleImage> ProcessAdImages(VehicleAd ad, VehicleAdRequest request)

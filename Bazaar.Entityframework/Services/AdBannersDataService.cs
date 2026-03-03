@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Bazaar.Entityframework.Services
 {
-    public class AdBannersDataService(AppDbContext appDbContext) : IDataService<AdBanners>
+    public class AdBannersDataService(AppDbContext appDbContext) : IDataService<AdBanners>, IAdBannerAdminService
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         public async Task<AdBanners> CreateAsync(AdBanners entity)
@@ -27,6 +27,13 @@ namespace Bazaar.Entityframework.Services
             var now = DateTime.UtcNow;
             IEnumerable<AdBanners> banners = await _appDbContext.Set<AdBanners>()
                 .Where(x => x.ExpirationDate >= now && x.ActivationDate <= now).AsNoTracking().ToListAsync();
+            return banners;
+        }
+
+        public async Task<IEnumerable<AdBanners>> GetAllForAdminAsync()
+        {
+            IEnumerable<AdBanners> banners = await _appDbContext.Set<AdBanners>()
+           .AsNoTracking().ToListAsync();
             return banners;
         }
 

@@ -6,6 +6,7 @@ using Bazaar.Entityframework.Models.Stats;
 using Bazaar.Entityframework.Models.Vehicles;
 using Bazaar.Entityframework.Services;
 using Bazaar.Entityframework.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,6 +15,7 @@ namespace Bazaar.app.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class StatsController : ControllerBase
     {
         private readonly IStatsDataService _statsDataService;
