@@ -20,6 +20,7 @@ namespace Bazaar.app.HostBuilders
             services.AddScoped<IUserWalletService, UserWalletDataService>();
             services.AddScoped<IPackageDataService, PackageDataService>();
             services.AddScoped<IDataService<AdBanners>, AdBannersDataService>();
+            services.AddScoped<IAdBannerAdminService, AdBannersDataService>();
             services.AddScoped<IStatsDataService, StatsDataService>();
             services.AddScoped<IPaymentGatewayDataService, PaymentGatewayDataService>();
             services.AddScoped<IUserStateService, UserStateService>();
