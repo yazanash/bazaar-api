@@ -5,9 +5,11 @@ using Bazaar.Entityframework;
 using Bazaar.Entityframework.Models;
 using Bazaar.Entityframework.Models.Vehicles;
 using Bazaar.Entityframework.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -27,7 +29,8 @@ namespace Bazaar.app.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IVehicleImageDataService _vehicleImageDataService;
         private readonly IUserWalletService _userWalletService ;
-        public MyAdsController(WebPImageService imageService, IUserAdDataService adDataService, IDataService<City> cityDataService, IDataService<Manufacturer> manufacturerDataService, IDataService<VehicleModel> vehicleModelDataService, IWebHostEnvironment webHostEnvironment, IVehicleImageDataService vehicleImageDataService, IUserWalletService userWalletService)
+        private readonly IProfileDataService _profileDataService;
+        public MyAdsController(WebPImageService imageService, IUserAdDataService adDataService, IDataService<City> cityDataService, IDataService<Manufacturer> manufacturerDataService, IDataService<VehicleModel> vehicleModelDataService, IWebHostEnvironment webHostEnvironment, IVehicleImageDataService vehicleImageDataService, IUserWalletService userWalletService, IProfileDataService profileDataService)
         {
             _imageService = imageService;
             _adDataService = adDataService;
@@ -37,12 +40,24 @@ namespace Bazaar.app.Controllers
             _webHostEnvironment = webHostEnvironment;
             _vehicleImageDataService = vehicleImageDataService;
             _userWalletService = userWalletService;
+            _profileDataService = profileDataService;
         }
         [HttpPost]
         public async Task<IActionResult> CreateAd([FromBody] VehicleAdRequest adRequest)
         {
+
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
+
+            var wallet = await _userWalletService.GetUserWallet(userId);
+            if (wallet.AdsLimit==0 || wallet.ExpiryDate < DateTime.UtcNow)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new
+                {
+                    errorCode = "INSUFFICIENT_CREDIT",
+                    message = "لا يوجد رصيد كافٍ في محفظتك أو أن اشتراكك قد انتهى."
+                });
+            }
             var city = await _cityDataService.GetByIdAsync(adRequest.CityId);
             var model = await _vehicleModelDataService.GetByIdAsync(adRequest.VehicleModelId);
             var manufcturer = await _manufacturerDataService.GetByIdAsync(model.ManufacturerId);
@@ -123,11 +138,40 @@ namespace Bazaar.app.Controllers
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
+            var wallet = await _userWalletService.GetUserWallet(userId);
+            if (wallet.FeatureLimits == 0 || wallet.ExpiryDate < DateTime.UtcNow)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new
+                {
+                    errorCode = "INSUFFICIENT_CREDIT",
+                    message = "لا يوجد رصيد كافٍ في محفظتك أو أن اشتراكك قد انتهى."
+                });
+            }
             bool starred = await _adDataService.StarAdAsync(id);
             await _userWalletService.ConsumeFeatureCredit(userId, id);
             return Ok(new { starred });
         }
+        [HttpGet("validate")]
+        [Authorize]
+        public async Task<IActionResult> ValidateAdPosting()
+        {
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
 
+            var profile = await _profileDataService.GetUserProfileAsync(userId);
+            bool hasProfile = profile != null;
+            var wallet = await _userWalletService.GetUserWallet(userId);
+            bool hasActivePackage = wallet.AdsLimit > 0 && wallet.ExpiryDate > DateTime.UtcNow;
+
+            return Ok(new
+            {
+                canPost = hasProfile && hasActivePackage,
+                hasProfile = hasProfile,
+                hasActivePackage = hasActivePackage,
+                remainingAds = wallet.AdsLimit,
+                expiryDate = wallet.ExpiryDate
+            });
+        }
         private List<VehicleImage> ProcessAdImages(VehicleAd ad, VehicleAdRequest request)
         {
             List<VehicleImage> gallery = new List<VehicleImage>();
