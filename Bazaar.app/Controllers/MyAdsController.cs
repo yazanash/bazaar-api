@@ -119,7 +119,12 @@ namespace Bazaar.app.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMyAd(int id)
         {
+            VehicleAd vehicleAd =await _adDataService.GetByIdAsync(id);
             bool deleted = await _adDataService.DeleteAsync(id);
+            foreach(var img in vehicleAd.VehicleImages)
+            {
+                _imageService.DeleteImage(img.ImagePath);
+            }
             return Ok(deleted);
         }
 
