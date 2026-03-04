@@ -40,7 +40,11 @@ namespace Bazaar.Entityframework.Services
                 await _dbContext.Set<TelegramUserState>()
           .Where(e => e.ChatId == chatId)
           .ExecuteUpdateAsync(s => s
-              .SetProperty(p => p.Step, BotStep.Start));
+              .SetProperty(p => p.Step, BotStep.Start)
+                .SetProperty(p => p.LastInteraction, DateTime.Now)
+                 .SetProperty(p => p.Email, "")
+                 .SetProperty(p => p.Email, "")
+                  .SetProperty(p => p.TempReceiptFileId, ""));
             }
                 
         }

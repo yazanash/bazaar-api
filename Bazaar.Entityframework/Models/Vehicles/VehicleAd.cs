@@ -22,7 +22,7 @@ namespace Bazaar.Entityframework.Models.Vehicles
         public bool IsUsed { get; set; }
         public FuelType FuelType { get; set; }
         public bool Installment { get; set; }
-        public DateTime PostDate { get; set; }
+        public DateTime PostDate { get; set; } = DateTime.UtcNow;
         public decimal Price { get; set; }
         public Category Category { get; set; }
         public double UsedKilometers { get; set; }
