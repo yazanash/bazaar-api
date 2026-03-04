@@ -16,7 +16,7 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
         }
         public int CityId => VehicleAd.CityId;
         public int VehicleModelId => VehicleAd.VehicleModelId;
-
+        public int ManufacturerId => VehicleAd.VehicleModel?.Id??0;
         public List<VehicleImageResponse>? Gallery => VehicleAd.VehicleImages.Select(x => new VehicleImageResponse(x)).ToList();
         public int Id => VehicleAd.Id;
         public CityResponse? City => new(VehicleAd.City ?? new City());
@@ -30,6 +30,7 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
         public double UsedKilometers => VehicleAd.UsedKilometers;
         public string Color => VehicleAd.Color;
         public string Description => VehicleAd.Description;
+        public PubStatus Status => VehicleAd.PublishStatus;
         public CarSpecsResponse? CarSpecs => Category == Category.Passenger && VehicleAd.CarSpecs != null ? new CarSpecsResponse(VehicleAd.CarSpecs) : null;
         public TruckSpecsResponse? TruckSpecs => Category == Category.Trucks && VehicleAd.TruckSpecs != null ? new TruckSpecsResponse(VehicleAd.TruckSpecs) : null;
         public MotorSpecsResponse? MotorSpecs => Category == Category.Motorcycles && VehicleAd.MotorSpecs != null ? new MotorSpecsResponse(VehicleAd.MotorSpecs) : null;

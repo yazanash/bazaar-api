@@ -29,23 +29,18 @@ namespace Bazaar.Entityframework.Services
                 .SumAsync(pb => pb.Price);
 
             var rawGrowthData = await _appDbContext.Set<VehicleAd>()
-                .Where(a => a.PostDate >= fiveMonthsAgo)
-                .GroupBy(a => new { a.PostDate.Year, a.PostDate.Month })
-                .Select(g => new
-                {
-                    g.Key.Year,
-                    g.Key.Month,
-                    Count = g.Count()
-                })
-                .OrderBy(x => x.Year) 
-                .ThenBy(x => x.Month)
-                .ToListAsync();
+                                 .Where(a => a.PostDate >= fiveMonthsAgo)
+                                 .Select(a => a.PostDate) 
+                                 .ToListAsync();
 
-            var growthData = rawGrowthData.Select(x => new GrowthData
-            {
-                Month = new DateTime(x.Year, x.Month, 1).ToString("MMM"),
-                Ads = x.Count
-            }).ToList();
+            var growthData = rawGrowthData
+                .GroupBy(date => new { date.Year, date.Month })
+                .Select(g => new GrowthData
+                {
+                    Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM"),
+                    Ads = g.Count()
+                })
+                .ToList();
 
             var rawStatusData = await _appDbContext.Set<VehicleAd>()
                 .GroupBy(a => a.PublishStatus)
