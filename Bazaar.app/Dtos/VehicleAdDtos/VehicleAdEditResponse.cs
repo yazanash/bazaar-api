@@ -16,7 +16,7 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
         }
         public int CityId => VehicleAd.CityId;
         public int VehicleModelId => VehicleAd.VehicleModelId;
-        public int ManufacturerId => VehicleAd.VehicleModel?.Id??0;
+        public int ManufacturerId => VehicleAd.VehicleModel?.ManufacturerId??0;
         public List<VehicleImageResponse>? Gallery => VehicleAd.VehicleImages.Select(x => new VehicleImageResponse(x)).ToList();
         public int Id => VehicleAd.Id;
         public CityResponse? City => new(VehicleAd.City ?? new City());

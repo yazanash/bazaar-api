@@ -84,7 +84,8 @@ namespace Bazaar.app.Controllers
             {
                 VehicleAdResponse = new VehicleAdResponse(x),
                 PubStatus = x.PublishStatus,
-                Reasone = x.RejectionReason
+                Reasone = x.RejectionReason,
+                CanBoost = !(x.Featured && x.FeaturedUntil>DateTime.UtcNow)
 
             });
             return Ok(response);

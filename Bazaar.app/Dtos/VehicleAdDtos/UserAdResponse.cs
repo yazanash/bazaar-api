@@ -6,7 +6,7 @@ namespace Bazaar.app.Dtos.VehicleAdDtos
     {
         public PubStatus PubStatus { get; set; }
         public string? Reasone { get; set; }
-
+        public bool CanBoost { get; set; }
         public VehicleAdResponse? VehicleAdResponse { get; set; }
 
     }
