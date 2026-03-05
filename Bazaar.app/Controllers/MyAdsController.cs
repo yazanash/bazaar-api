@@ -153,6 +153,11 @@ namespace Bazaar.app.Controllers
                     message = "لا يوجد رصيد كافٍ في محفظتك أو أن اشتراكك قد انتهى."
                 });
             }
+            VehicleAd vehicleAd = await _adDataService.GetByIdAsync(id);
+            if (vehicleAd.Featured && vehicleAd.FeaturedUntil>DateTime.UtcNow) 
+            {
+                return Conflict("cannot boost this ad because it is already boosted");
+            }
             bool starred = await _adDataService.StarAdAsync(id);
             await _userWalletService.ConsumeFeatureCredit(userId, id);
             return Ok(new { starred });
