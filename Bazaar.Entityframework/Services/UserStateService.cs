@@ -43,7 +43,6 @@ namespace Bazaar.Entityframework.Services
               .SetProperty(p => p.Step, BotStep.Start)
                 .SetProperty(p => p.LastInteraction, DateTime.Now)
                  .SetProperty(p => p.Email, "")
-                 .SetProperty(p => p.Email, "")
                   .SetProperty(p => p.TempReceiptFileId, ""));
             }
                 
