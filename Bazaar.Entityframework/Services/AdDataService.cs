@@ -113,11 +113,11 @@ namespace Bazaar.Entityframework.Services
             if (generalFilter.VehicleModelId.HasValue) adPredicate = adPredicate.And(v => v.VehicleModelId == generalFilter.VehicleModelId);
             if (generalFilter.ManufacturerId.HasValue) adPredicate = adPredicate.And(v => v.VehicleModel != null && v.VehicleModel.ManufacturerId == generalFilter.ManufacturerId);
             if (generalFilter.IsUsed.HasValue) adPredicate = adPredicate.And(v => v.IsUsed == generalFilter.IsUsed);
-            if (generalFilter.FuelType.HasValue) adPredicate = adPredicate.And(v => v.FuelType == generalFilter.FuelType);
+            if (generalFilter.FuelType.HasValue || generalFilter.FuelType!= FuelType.NotSpecified) adPredicate = adPredicate.And(v => v.FuelType == generalFilter.FuelType);
             if (generalFilter.Installment.HasValue) adPredicate = adPredicate.And(v => v.Installment == generalFilter.Installment);
             if (generalFilter.PriceFrom.HasValue) adPredicate = adPredicate.And(v => v.Price >= generalFilter.PriceFrom);
             if (generalFilter.PriceTo.HasValue) adPredicate = adPredicate.And(v => v.Price <= generalFilter.PriceTo);
-            if (generalFilter.Category.HasValue) adPredicate = adPredicate.And(v => v.Category == generalFilter.Category);
+            if (generalFilter.Category.HasValue || generalFilter.Category != Category.NotSpecified) adPredicate = adPredicate.And(v => v.Category == generalFilter.Category);
             if (generalFilter.PostDate == PostDateFilter.Past24) adPredicate = adPredicate.And(v => v.PublishedAt >= DateTime.UtcNow.AddHours(-24));
             if (generalFilter.PostDate == PostDateFilter.PastWeek) adPredicate = adPredicate.And(v => v.PublishedAt >= DateTime.UtcNow.AddDays(-7));
             if (generalFilter.PostDate == PostDateFilter.PastMonth) adPredicate = adPredicate.And(v => v.PublishedAt >= DateTime.UtcNow.AddMonths(-1));
@@ -127,10 +127,10 @@ namespace Bazaar.Entityframework.Services
                 if (specsFilter is CarSpecsFilter carF)
                 {
                     adPredicate = adPredicate.And(v => v.CarSpecs != null);
-                    if (carF.UsageType.HasValue) adPredicate = adPredicate.And(v => v.CarSpecs!.UsageType == carF.UsageType);
-                    if (carF.Transmission.HasValue) adPredicate = adPredicate.And(v => v.CarSpecs!.Transmission == carF.Transmission);
-                    if (carF.CarBodyType.HasValue) adPredicate = adPredicate.And(v => v.CarSpecs!.CarBodyType == carF.CarBodyType);
-                    if (carF.DriveSystem.HasValue) adPredicate = adPredicate.And(v => v.CarSpecs!.DriveSystem == carF.DriveSystem);
+                    if (carF.UsageType.HasValue || carF.UsageType != UsageType.NotSpecified) adPredicate = adPredicate.And(v => v.CarSpecs!.UsageType == carF.UsageType);
+                    if (carF.Transmission.HasValue || carF.Transmission != Transmission.NotSpecified) adPredicate = adPredicate.And(v => v.CarSpecs!.Transmission == carF.Transmission);
+                    if (carF.CarBodyType.HasValue || carF.CarBodyType != CarBodyType.NotSpecified) adPredicate = adPredicate.And(v => v.CarSpecs!.CarBodyType == carF.CarBodyType);
+                    if (carF.DriveSystem.HasValue || carF.DriveSystem != DriveSystem.NotSpecified) adPredicate = adPredicate.And(v => v.CarSpecs!.DriveSystem == carF.DriveSystem);
                     if (carF.IsModified.HasValue) adPredicate = adPredicate.And(v => v.CarSpecs!.IsModified == carF.IsModified);
                     if (carF.DoorsCount.HasValue) adPredicate = adPredicate.And(v => v.CarSpecs!.DoorsCount == carF.DoorsCount);
                     if (carF.SeatsCount.HasValue) adPredicate = adPredicate.And(v => v.CarSpecs!.SeatsCount == carF.SeatsCount);
@@ -138,16 +138,16 @@ namespace Bazaar.Entityframework.Services
                 else if (specsFilter is TruckSpecsFilter truckF)
                 {
                     adPredicate = adPredicate.And(v => v.TruckSpecs != null);
-                    if (truckF.TruckBodyType.HasValue) adPredicate = adPredicate.And(v => v.TruckSpecs!.TruckBodyType == truckF.TruckBodyType);
+                    if (truckF.TruckBodyType.HasValue || truckF.TruckBodyType != TruckBodyType.NotSpecified) adPredicate = adPredicate.And(v => v.TruckSpecs!.TruckBodyType == truckF.TruckBodyType);
                     if (truckF.PayloadFrom.HasValue) adPredicate = adPredicate.And(v => v.TruckSpecs!.Payload >= truckF.PayloadFrom);
                     if (truckF.PayloadTo.HasValue) adPredicate = adPredicate.And(v => v.TruckSpecs!.Payload <= truckF.PayloadTo);
-                    if (truckF.TrucksUsageType.HasValue) adPredicate = adPredicate.And(v => v.TruckSpecs!.TrucksUsageType == truckF.TrucksUsageType);
+                    if (truckF.TrucksUsageType.HasValue || truckF.TrucksUsageType != TrucksUsageType.NotSpecified) adPredicate = adPredicate.And(v => v.TruckSpecs!.TrucksUsageType == truckF.TrucksUsageType);
                 }
                 else if (specsFilter is MotorSpecsFilter motorF)
                 {
                     adPredicate = adPredicate.And(v => v.MotorSpecs != null);
-                    if (motorF.MotorTransmission.HasValue) adPredicate = adPredicate.And(v => v.MotorSpecs!.MotorTransmission == motorF.MotorTransmission);
-                    if (motorF.MotorBodyType.HasValue) adPredicate = adPredicate.And(v => v.MotorSpecs!.MotorBodyType == motorF.MotorBodyType);
+                    if (motorF.MotorTransmission.HasValue || motorF.MotorTransmission != MotorTransmission.NotSpecified) adPredicate = adPredicate.And(v => v.MotorSpecs!.MotorTransmission == motorF.MotorTransmission);
+                    if (motorF.MotorBodyType.HasValue || motorF.MotorBodyType != MotorBodyType.NotSpecified) adPredicate = adPredicate.And(v => v.MotorSpecs!.MotorBodyType == motorF.MotorBodyType);
                     if (motorF.IsModified.HasValue) adPredicate = adPredicate.And(v => v.MotorSpecs!.IsModified == motorF.IsModified);
                 }
             }
