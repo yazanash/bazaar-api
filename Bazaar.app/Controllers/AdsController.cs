@@ -50,6 +50,14 @@ namespace Bazaar.app.Controllers
             PagedList<VehicleAdResponse> response = pagedList.MapTo(ad => new VehicleAdResponse(ad, userId));
             return Ok(response);
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SitemapData()
+        {
+            PagedList<VehicleAd> pagedList = await _adDataService.GetAllStarredAsync(1, 200,null);
+            List<SitemapDataResponse> response = pagedList.Items.Select(x => new SitemapDataResponse { Slug = x.Slug, UpdatedAt = x.PublishedAt ?? DateTime.UtcNow }).ToList();
+            return Ok(response);
+        }
         [HttpGet("ad/{slug}")]
         public async Task<IActionResult> GetAdDetails(string slug)
         {
