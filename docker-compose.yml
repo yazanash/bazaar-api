@@ -9,7 +9,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - DB_PASSWORD=${DB_PASSWORD}
     ports:
-      - "8091:8080"
+      - "${EXTERNAL_PORT}:8080"
     volumes:
       - ./appsettings.Production.json:/app/appsettings.Production.json:ro
       - ./wwwroot/ads:/app/wwwroot/ads
