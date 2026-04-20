@@ -889,7 +889,6 @@
         { "Name": "Uno", "Cat": 1 }
       ]
     },
-    [
       {
         "Name": "Force",
         "Models": [
@@ -951,8 +950,7 @@
           { "Name": "TUNLAND", "Cat": 3 },
           { "Name": "View", "Cat": 3 }
         ]
-      }
-    ],
+      },
     {
       "Name": "GAC",
       "Models": [
